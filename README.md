@@ -11,10 +11,16 @@ This is our school assignment where we'll build an online store with PHP and SQL
 
 ## Features
 
-- Customers can log in to the store
-- Customers can order products
-- Admins can create, read, update and delete products
-- Admins can change the status of an order
+1. Customers can:
+
+- Log in to the store
+- View products in the store
+- Order one, or multiple, products
+
+2. Admins can:
+
+- Create, read, update and delete products
+- Change the status of an order
 
 ## Our Trello
 
