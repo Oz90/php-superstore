@@ -9,6 +9,13 @@ This is our school assignment where we'll build an online store with PHP and SQL
 - Sebastian
 - Özgür
 
+## Features
+
+- Customers can log in to the store
+- Customers can order products
+- Admins can create, read, update and delete products
+- Admins can change the status of an order
+
 ## Our Trello
 
 https://trello.com/b/0DD1jo3u/databas-2
