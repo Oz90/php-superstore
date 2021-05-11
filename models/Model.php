@@ -18,7 +18,7 @@ class Model
 
     public function fetchProductById($id)
     {
-        $statement = "SELECT * FROM films WHERE film_id = :id";
+        $statement = "SELECT * FROM product WHERE id = :id";
         $params = array(":id" => $id);
         $product = $this->db->select($statement, $params);
         // print_r($product);
@@ -27,7 +27,7 @@ class Model
 
     public function fetchCustomerById($id)
     {
-     
+
         $statement = "SELECT * FROM customers WHERE customer_id=:id";
         $parameters = array(':id' => $id);
         $customer = $this->db->select($statement, $parameters);
@@ -36,7 +36,7 @@ class Model
 
     public function fetchCustomerByEmail($email)
     {
-     
+
         $statement = "SELECT * FROM customer WHERE email=:email";
         $parameters = array(':email' => $email);
         $customer = $this->db->select($statement, $parameters);
@@ -67,34 +67,67 @@ class Model
     public function loginCustomer($email, $password)
     {
         $customer = $this->fetchCustomerByEmail($email);
-            if (!$customer){
-                echo "user already exists";
-                exit();
-            }
+        if (!$customer) {
+            $html = <<< HTML
+            <div class="my-2 alert alert-danger">
+                Email already taken!
+            </div>
+            HTML;
+
+            echo $html;
+            exit();
+        }
 
 
         $statement = "SELECT * FROM customer WHERE email=:email";
 
-         $parameters = array(
+        $parameters = array(
             ':email' => $email,
         );
 
         $customer = $this->db->select($statement, $parameters);
 
-        print_r($customer[0]);
-     
+        $userId = $customer[0]['id'];
+        $email = $customer[0]['email'];
+        $dbPassword = $customer[0]['password'];
 
+        if (!password_verify($password, $dbPassword)) {
+            $html = <<< HTML
+            <div class="my-2 alert alert-danger">
+                Wrong username or password!
+            </div>
+            HTML;
+
+            echo $html;
+            exit();
+        }
+
+        if (!isset($_SESSION))
+            session_start();
+        // Store data in session variables
+        $_SESSION["loggedin"] = true;
+        $_SESSION["id"] = $userId;
+        $_SESSION["email"] = $email;
+
+        header("location: index.php");
     }
+
 
 
 
     public function insertCustomer($name, $email, $password)
     {
         $customer = $this->fetchCustomerByEmail($email);
-            if ($customer){
-                echo "user already exists";
-                exit();
-            }
+        if ($customer) {
+            $html = <<< HTML
+            <div class="my-2 alert alert-danger">
+                User already exist!
+            </div>
+            HTML;
+
+            echo $html;
+            exit();
+        }
 
         $statement = "INSERT INTO customer (name, email, password)  
                       VALUES (:name, :email, :password)";
@@ -103,10 +136,10 @@ class Model
             ':email' => $email,
             ':password' => password_hash($password, PASSWORD_DEFAULT)
         );
-         $this->db->insert($statement, $parameters);
+        $this->db->insert($statement, $parameters);
         // Ordernummer
-//        $lastInsertId = $this->db->insert($statement, $parameters);
+        //        $lastInsertId = $this->db->insert($statement, $parameters);
 
-     //   return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
+        //   return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
     }
 }
