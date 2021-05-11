@@ -67,7 +67,7 @@ class View
 
     public function viewOrderPage($product)
     {
-        $this->viewOneMovie($product);
+        $this->viewOneProduct($product);
         $this->viewOrderForm($product);
     }
 
@@ -79,8 +79,8 @@ class View
             <div class="col-md-6">
             
                 <form action="#" method="post">
-                    <input type="hidden" name="film_id" 
-                            value="$product[film_id]">
+                    <input type="hidden" name="id" 
+                            value="$product[id]">
                     <input type="number" name="customer_id" required 
                             class="form-control form-control-lg my-2" 
                             placeholder="Ange ditt kundnummer">
