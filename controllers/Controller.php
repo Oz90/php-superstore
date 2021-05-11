@@ -1,5 +1,4 @@
 <?php
-
 class Controller
 {
 
@@ -31,50 +30,68 @@ class Controller
             case "login":
                 $this->login();
                 break;
+            case "logout":
+                $this->logout();
+                break;
             case "registration":
                 $this->registration();
                 break;
             default:
                 $this->getAllProducts();
         }
-        
     }
 
-    private function login(){
-          // Check if the user is already logged in, if yes then redirect him to welcome page
-          if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    private function login()
+    {
+        // Check if the user is already logged in, if yes then redirect him to welcome page
+        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             header("location: index.php");
             exit;
         }
-    
+
         $this->getHeader("login");
         $this->view->viewLoginPage();
 
-          
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->loginUser();
         }
         $this->getFooter();
     }
 
-    private function registration(){
+    private function registration()
+    {
+        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+            header("location: index.php");
+            exit;
+        }
+
         $this->getHeader("registration");
         $this->view->viewRegistrationPage();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $this->createUser();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->createCustomer();
         }
         $this->getFooter();
     }
 
+    private function logout()
+    {
+        // Destroy the session.
+        session_destroy();
 
-    private function loginUser(){
+        // Redirect to login page
+        header("location: index.php");
+        exit;
+    }
+
+
+    private function loginUser()
+    {
 
         $email = $this->sanitize($_POST['email']);
         $password = $this->sanitize($_POST['password']);
-       // print_r($name);
+        // print_r($name);
 
-        $new_user = $this->model->loginCustomer($email, $password);
+        $this->model->loginCustomer($email, $password);
 
         $this->getFooter();
     }
@@ -125,13 +142,13 @@ class Controller
         $name = $this->sanitize($_POST['name']);
         $email = $this->sanitize($_POST['email']);
         $password = $this->sanitize($_POST['password']);
-       // print_r($name);
+        // print_r($name);
 
         $new_user = $this->model->insertCustomer($name, $email, $password);
 
-           // $this->view->viewOrderPage($product);
+        // $this->view->viewOrderPage($product);
 
-     /*   if ($_SERVER['REQUEST_METHOD'] === 'POST')
+        /*   if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $this->processOrderForm();*/
 
         $this->getFooter();
