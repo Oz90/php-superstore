@@ -13,8 +13,15 @@
 </head>
 
 <body class="container">
-<a href="?page=login">login</a>
-<a href="?page=registration">registration</a>
+    <?php
+    if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+        echo "<a href='?page=logout'>logout</a>";
+    } else {
+        echo "<a href='?page=login'>login</a>";
+        echo " <a href='?page=registration'>registration</a>";
+    }
+    ?>
+
     <h1 class="text-center">
         <a href="index.php">
             Videobutiken
