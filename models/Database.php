@@ -45,7 +45,7 @@ class Database
     public function select($statement, $input_parameters = [])
     {
         $stmt = $this->execute($statement, $input_parameters);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll($fetch_type);
         // https://www.php.net/manual/en/pdostatement.fetchall
     }
 

@@ -45,7 +45,7 @@ class Model
 
 
 
-    public function saveOrder($customer_id, $order_id)
+    public function insertOrder($customer_id, $order_id)
     {
         $customer = $this->fetchCustomerById($customer_id);
         if (!$customer) return false;
@@ -63,7 +63,32 @@ class Model
         return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
     }
 
-    public function createCustomer($name, $email, $password)
+
+    public function loginCustomer($email, $password)
+    {
+        $customer = $this->fetchCustomerByEmail($email);
+            if (!$customer){
+                echo "user already exists";
+                exit();
+            }
+
+
+        $statement = "SELECT * FROM customer WHERE email=:email";
+
+         $parameters = array(
+            ':email' => $email,
+        );
+
+        $customer = $this->db->select($statement, $parameters);
+
+        print_r($customer[0]);
+     
+
+    }
+
+
+
+    public function insertCustomer($name, $email, $password)
     {
         $customer = $this->fetchCustomerByEmail($email);
             if ($customer){

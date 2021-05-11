@@ -41,8 +41,20 @@ class Controller
     }
 
     private function login(){
+          // Check if the user is already logged in, if yes then redirect him to welcome page
+          if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+            header("location: index.php");
+            exit;
+        }
+    
         $this->getHeader("login");
         $this->view->viewLoginPage();
+
+          
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $this->loginUser();
+        }
         $this->getFooter();
     }
 
@@ -52,6 +64,18 @@ class Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $this->createUser();
         }
+        $this->getFooter();
+    }
+
+
+    private function loginUser(){
+
+        $email = $this->sanitize($_POST['email']);
+        $password = $this->sanitize($_POST['password']);
+       // print_r($name);
+
+        $new_user = $this->model->loginCustomer($email, $password);
+
         $this->getFooter();
     }
 
@@ -96,15 +120,14 @@ class Controller
         $this->getFooter();
     }
 
-    private function createUser()
+    private function createCustomer()
     {
-  
         $name = $this->sanitize($_POST['name']);
         $email = $this->sanitize($_POST['email']);
         $password = $this->sanitize($_POST['password']);
        // print_r($name);
 
-        $new_user = $this->model->createCustomer($name, $email, $password);
+        $new_user = $this->model->insertCustomer($name, $email, $password);
 
            // $this->view->viewOrderPage($product);
 
@@ -119,7 +142,7 @@ class Controller
     {
         $product_id    = $this->sanitize($_POST['product_id']);
         $customer_id = $this->sanitize($_POST['customer_id']);
-        $confirm = $this->model->saveOrder($customer_id, $product_id);
+        $confirm = $this->model->insertOrder($customer_id, $product_id);
 
         if ($confirm) {
             $customer = $confirm['customer'];
