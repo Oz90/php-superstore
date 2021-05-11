@@ -43,15 +43,15 @@ class Controller
     private function login(){
         $this->getHeader("login");
         $this->view->viewLoginPage();
-   
         $this->getFooter();
     }
 
     private function registration(){
         $this->getHeader("registration");
         $this->view->viewRegistrationPage();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $this->createUser();
+        }
         $this->getFooter();
     }
 
