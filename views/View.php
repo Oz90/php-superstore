@@ -27,13 +27,21 @@ class View
     {
         include_once("views/include/registration.php");
     }
-    
+
     public function viewAdminPage()
     {
         include_once("views/include/admin.php");
     }
 
+    public function adminViewProduct()
+    {
+        echo "Viewing product page";
+    }
 
+    public function adminViewOrders()
+    {
+        echo "Viewing Orders page";
+    }
 
     // Bra att läsa om PHP Templating och HEREDOC syntax!
     // https://css-tricks.com/php-templating-in-just-php/

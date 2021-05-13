@@ -128,6 +128,20 @@ class Controller
     {
         $this->getHeader("Admin");
         $this->view->viewAdminPage();
+
+        if (isset($_GET['view'])) {
+            $view = $this->sanitize($_GET['view']);
+
+            if ($view === "products") {
+                $this->getAllProducts();
+                $this->view->adminViewProduct();
+            }
+
+            if ($view === "orders") {
+                $this->view->adminViewOrders();
+            }
+        }
+
         $this->getFooter();
     }
 
