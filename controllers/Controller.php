@@ -28,7 +28,13 @@ class Controller
                 $this->order();
                 break;
             case "login":
-                $this->login();
+                $this->login("Customer");
+                break;
+            case "login-admin":
+                $this->login("Admin");
+                break;
+            case "admin":
+                $this->admin();
                 break;
             case "logout":
                 $this->logout();
@@ -41,7 +47,7 @@ class Controller
         }
     }
 
-    private function login()
+    private function login($userType)
     {
         // Check if the user is already logged in, if yes then redirect him to welcome page
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
@@ -49,11 +55,13 @@ class Controller
             exit;
         }
 
-        $this->getHeader("login");
+        
+        $this->getHeader("Login " . $userType);
         $this->view->viewLoginPage();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->loginUser();
+            
+            $this->loginUser($userType);
         }
         $this->getFooter();
     }
@@ -83,15 +91,18 @@ class Controller
         exit;
     }
 
-
-    private function loginUser()
+    private function loginUser($userType)
     {
 
         $email = $this->sanitize($_POST['email']);
         $password = $this->sanitize($_POST['password']);
         // print_r($name);
 
-        $this->model->loginCustomer($email, $password);
+        if($userType === "Admin") {
+            $this->model->loginAdmin($email, $password);
+        } else {
+            $this->model->loginCustomer($email, $password);
+        }
 
         $this->getFooter();
     }
@@ -110,6 +121,13 @@ class Controller
     {
         $this->getHeader("Om Oss");
         $this->view->viewAboutPage();
+        $this->getFooter();
+    }
+
+    private function admin()
+    {
+        $this->getHeader("Admin");
+        $this->view->viewAdminPage();
         $this->getFooter();
     }
 

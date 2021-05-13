@@ -42,6 +42,15 @@ class Model
         $customer = $this->db->select($statement, $parameters);
         return $customer[0] ?? false;
     }
+    
+    public function fetchAdminByEmail($email)
+    {
+
+        $statement = "SELECT * FROM admin WHERE email=:email";
+        $parameters = array(':email' => $email);
+        $admin = $this->db->select($statement, $parameters);
+        return $admin[0] ?? false;
+    }
 
 
 
@@ -63,6 +72,48 @@ class Model
         return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
     }
 
+
+    public function loginAdmin($email, $password){
+        
+        $admin = $this->fetchAdminByEmail($email);
+        if (!$admin) {
+            $html = <<< HTML
+            <div class="my-2 alert alert-danger">
+                You don't have have access to this page. 
+            </div>
+            HTML;
+
+            echo $html;
+            exit();
+        }
+
+        $dbPassword = $admin[0]['password'];
+        echo $password;
+        echo $dbPassword;
+
+
+        if(!$password === $dbPassword) {
+            $html = <<< HTML
+            <div class="my-2 alert alert-danger">
+                Wrong username or password!
+            </div>
+            HTML;
+
+            echo $html;
+            exit();
+        }
+           
+        if (!isset($_SESSION))
+        session_start();
+           
+        // Store data in session variables
+        $_SESSION["loggedin"] = true;
+        $_SESSION["id"] = $userId;
+        $_SESSION["email"] = $email;
+
+        header("location: ?page=admin");
+
+    }
 
     public function loginCustomer($email, $password)
     {

@@ -27,6 +27,11 @@ class View
     {
         include_once("views/include/registration.php");
     }
+    
+    public function viewAdminPage()
+    {
+        include_once("views/include/admin.php");
+    }
 
 
 
