@@ -55,12 +55,12 @@ class Controller
             exit;
         }
 
-        
+
         $this->getHeader("Login " . $userType);
         $this->view->viewLoginPage();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
+
             $this->loginUser($userType);
         }
         $this->getFooter();
@@ -98,9 +98,9 @@ class Controller
         $password = $this->sanitize($_POST['password']);
         // print_r($name);
 
-        if($userType === "Admin") {
+        if ($userType === "Admin") {
             $this->model->loginAdmin($email, $password);
-        } else {
+        } elseif ($userType === "Customer") {
             $this->model->loginCustomer($email, $password);
         }
 

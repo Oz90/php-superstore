@@ -42,7 +42,7 @@ class Model
         $customer = $this->db->select($statement, $parameters);
         return $customer[0] ?? false;
     }
-    
+
     public function fetchAdminByEmail($email)
     {
 
@@ -73,8 +73,9 @@ class Model
     }
 
 
-    public function loginAdmin($email, $password){
-        
+    public function loginAdmin($email, $password)
+    {
+
         $admin = $this->fetchAdminByEmail($email);
         if (!$admin) {
             $html = <<< HTML
@@ -87,12 +88,13 @@ class Model
             exit();
         }
 
-        $dbPassword = $admin[0]['password'];
-        echo $password;
-        echo $dbPassword;
+        $adminId = $admin['id'];
+        $email = $admin['email'];
+        $dbPassword = $admin['password'];
+        // echo $password;
+        // echo $dbPassword;
 
-
-        if(!$password === $dbPassword) {
+        if (!$password === $dbPassword) {
             $html = <<< HTML
             <div class="my-2 alert alert-danger">
                 Wrong username or password!
@@ -102,17 +104,16 @@ class Model
             echo $html;
             exit();
         }
-           
+
         if (!isset($_SESSION))
-        session_start();
-           
+            session_start();
+
         // Store data in session variables
         $_SESSION["loggedin"] = true;
-        $_SESSION["id"] = $userId;
+        $_SESSION["id"] = $adminId;
         $_SESSION["email"] = $email;
 
         header("location: ?page=admin");
-
     }
 
     public function loginCustomer($email, $password)
@@ -130,17 +131,9 @@ class Model
         }
 
 
-        $statement = "SELECT * FROM customer WHERE email=:email";
-
-        $parameters = array(
-            ':email' => $email,
-        );
-
-        $customer = $this->db->select($statement, $parameters);
-
-        $userId = $customer[0]['id'];
-        $email = $customer[0]['email'];
-        $dbPassword = $customer[0]['password'];
+        $userId = $customer['id'];
+        $email = $customer['email'];
+        $dbPassword = $customer['password'];
 
         if (!password_verify($password, $dbPassword)) {
             $html = <<< HTML
