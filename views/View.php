@@ -81,7 +81,7 @@ class View
                                 <h5>Pris: $product[price] kr</h5>
                                 <a href="?page=admin&view=product&id=$product[id]">
                                     <button>Edit</button>
-                                </a>                  
+                                </a>                                    
                             </div>
                         </div>
                     </div>
@@ -156,9 +156,10 @@ class View
                         <option value="electronics">Electronics</option>
                         <option value="jewelery">Jewelery</option>
                     </select>
-                
-                    <input type="submit" class="form-control my-2 btn btn-lg btn-outline-success" 
+                    <input type="submit" name="update" class="form-control my-2 btn btn-lg btn-outline-success" 
                             value="Update Product">
+                    <input type="submit" name="delete" class="form-control my-2 btn btn-lg btn-outline-danger" 
+                            value="Delete Product">
                 </form>
                 
             <!-- col avslutas efter ett meddelande från viewConfirmMessage eller viewErrorMessage -->

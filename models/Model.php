@@ -21,8 +21,15 @@ class Model
         $statement = "SELECT * FROM product WHERE id = :id";
         $params = array(":id" => $id);
         $product = $this->db->select($statement, $params);
-        // print_r($product);
         return $product[0] ?? false;
+    }
+
+    public function deleteProductById($id)
+    {
+        $statement = "DELETE FROM product WHERE id = :id";
+        $params = array(":id" => $id);
+        $product = $this->db->delete($statement, $params);
+        // return $product[0] ?? false;
     }
 
     public function fetchCustomerById($id)

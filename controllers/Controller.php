@@ -148,6 +148,9 @@ class Controller
             if ($view === "orders") {
                 $this->view->adminViewOrders();
             }
+            if ($view === "delete") {
+                $this->deleteProduct();
+            }
         }
 
         $this->getFooter();
@@ -167,6 +170,13 @@ class Controller
         $this->view->viewAllProducts($products);
     }
 
+    private function deleteProduct()
+    {
+        $id = $this->sanitize($_GET['id']);
+        $this->model->deleteProductById($id);
+        header("location: ?page=admin&view=products");
+    }
+
     private function editProduct()
     {
         $this->getHeader("Edit Product");
@@ -177,8 +187,13 @@ class Controller
         if ($product)
             $this->view->viewEditPage($product);
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            $this->processEditForm();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['update'])) {
+                $this->processEditForm();
+            } elseif (isset($_POST['delete'])) {
+                $this->deleteProduct();
+            }
+        }
 
         $this->getFooter();
     }
