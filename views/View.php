@@ -126,7 +126,7 @@ class View
             <div class="col-md-6">
             
                 <form action="#" method="post">
-                    <input type="hidden" name="id" 
+                    <input type="hidden" name="product_id" 
                             value="$product[id]">
 
                     <label for="product_name">Product Name</label>

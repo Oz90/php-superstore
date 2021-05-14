@@ -65,6 +65,7 @@ class Database
      */
     public function update($statement, $input_parameters = [])
     {
+        
         $this->execute($statement, $input_parameters);
     }
 

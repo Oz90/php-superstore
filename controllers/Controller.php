@@ -217,6 +217,33 @@ class Controller
     }
 
 
+    private function processEditForm()
+    {
+        $product_id             = $this->sanitize($_POST['product_id']);
+        $product_name           = $this->sanitize($_POST['product_name']);
+        $product_price          = $this->sanitize($_POST['product_price']);
+        $product_description    = $this->sanitize($_POST['product_description']);
+        $product_image          = $this->sanitize($_POST['product_image']);
+        $product_category       = $this->sanitize($_POST['product_category']);
+
+        $confirm = $this->model->updateProduct(
+            $product_id,
+            $product_name,
+            $product_price,
+            $product_description,
+            $product_image,
+            $product_category
+        );
+
+        if ($confirm) {
+            $customer = $confirm['customer'];
+            $lastInsertId = $confirm['lastInsertId'];
+            $this->view->viewConfirmMessage($customer, $lastInsertId);
+        } else {
+            $this->view->viewErrorMessage($customer_id);
+        }
+    }
+
     private function processOrderForm()
     {
         $product_id    = $this->sanitize($_POST['product_id']);
