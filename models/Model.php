@@ -104,10 +104,10 @@ class Model
 
         // Ordernummer
 
-        $this->db->update($statement, $parameters);
+        // $this->db->update($statement, $parameters);
 
-        // $lastInsertId = $this->db->update($statement, $parameters);
-        //return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
+        $lastInsertId = $this->db->update($statement, $parameters);
+        return array('product' => $product, 'lastInsertId' => $lastInsertId);
     }
 
 
