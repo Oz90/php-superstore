@@ -78,47 +78,34 @@ class Model
         $product_price,
         $product_description,
         $product_image,
-        $product_category)
-    {
-        
-        
-        
-        
+        $product_category
+    ) {
         $product = $this->fetchProductById($product_id);
         if (!$product) return false;
-        
-        
 
+        $statement =
+            "UPDATE product SET 
+            name = :product_name,
+            price = :product_price,
+            description = :product_description,
+            image = :product_image,
+            category = :product_category
+        WHERE 
+            id = :product_id";
 
-
-        $statement = 
-        "UPDATE product 
-
-        SET (
-            name = $product_name,
-            price = $product_price,
-            description = $product_description,
-            image = $product_image,
-            category = $product_category
-        )
-        WHERE (
-            id = $product_id
-        )
-        ";
-        
-        // $parameters = array(
-        //     ':product_id' => $product_id,
-        //     ':product_name' => $product_name,
-        //     ':product_price' => $product_price,
-        //     ':product_description' => $product_description,
-        //     ':product_image' => $product_image,
-        //     ':product_category' => $product_category
-        // );
+        $parameters = array(
+            ':product_id' => $product_id,
+            ':product_name' => $product_name,
+            ':product_price' => $product_price,
+            ':product_description' => $product_description,
+            ':product_image' => $product_image,
+            ':product_category' => $product_category
+        );
 
         // Ordernummer
-        
-        $this->db->update($statement);
-        
+
+        $this->db->update($statement, $parameters);
+
         // $lastInsertId = $this->db->update($statement, $parameters);
         //return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
     }

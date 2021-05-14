@@ -148,7 +148,6 @@ class Controller
             if ($view === "orders") {
                 $this->view->adminViewOrders();
             }
-
         }
 
         $this->getFooter();
@@ -235,13 +234,13 @@ class Controller
             $product_category
         );
 
-        if ($confirm) {
-            $customer = $confirm['customer'];
-            $lastInsertId = $confirm['lastInsertId'];
-            $this->view->viewConfirmMessage($customer, $lastInsertId);
-        } else {
-            $this->view->viewErrorMessage($customer_id);
-        }
+        // if ($confirm) {
+        //     $customer = $confirm['customer'];
+        //     $lastInsertId = $confirm['lastInsertId'];
+        //     $this->view->viewConfirmMessage($customer, $lastInsertId);
+        // } else {
+        //     $this->view->viewErrorMessage($customer_id);
+        // }
     }
 
     private function processOrderForm()
