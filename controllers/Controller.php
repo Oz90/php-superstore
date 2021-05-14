@@ -126,6 +126,13 @@ class Controller
 
     private function admin()
     {
+
+        // Check if the user is already logged in, if yes then redirect him to welcome page
+        if (!isset($_SESSION["admin"]) && !$_SESSION["admin"] === true) {
+            header("location: index.php");
+            exit;
+        }
+
         $this->getHeader("Admin");
         $this->view->viewAdminPage();
 
@@ -133,13 +140,15 @@ class Controller
             $view = $this->sanitize($_GET['view']);
 
             if ($view === "products") {
-                $this->getAllProducts();
-                $this->view->adminViewProduct();
+                $this->getAdminProducts();
             }
-
+            if ($view === "product") {
+                $this->editProduct();
+            }
             if ($view === "orders") {
                 $this->view->adminViewOrders();
             }
+
         }
 
         $this->getFooter();
@@ -153,6 +162,27 @@ class Controller
         $this->getFooter();
     }
 
+    private function getAdminProducts()
+    {
+        $products = $this->model->fetchAllProducts();
+        $this->view->viewAllProducts($products);
+    }
+
+    private function editProduct()
+    {
+        $this->getHeader("Edit Product");
+
+        $id = $this->sanitize($_GET['id']);
+        $product = $this->model->fetchProductById($id);
+
+        if ($product)
+            $this->view->viewEditPage($product);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST')
+            $this->processEditForm();
+
+        $this->getFooter();
+    }
     private function order()
     {
         $this->getHeader("Beställning");

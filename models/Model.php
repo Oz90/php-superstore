@@ -112,6 +112,7 @@ class Model
         $_SESSION["loggedin"] = true;
         $_SESSION["id"] = $adminId;
         $_SESSION["email"] = $email;
+        $_SESSION["admin"] = true;
 
         header("location: ?page=admin");
     }
@@ -129,7 +130,6 @@ class Model
             echo $html;
             exit();
         }
-
 
         $userId = $customer['id'];
         $email = $customer['email'];
