@@ -102,12 +102,8 @@ class Model
             ':product_category' => $product_category
         );
 
-        // Ordernummer
-
-        // $this->db->update($statement, $parameters);
-
-        $lastInsertId = $this->db->update($statement, $parameters);
-        return array('product' => $product, 'lastInsertId' => $lastInsertId);
+        $this->db->update($statement, $parameters);
+        return array('product' => $product);
     }
 
 
@@ -129,8 +125,6 @@ class Model
         $adminId = $admin['id'];
         $email = $admin['email'];
         $dbPassword = $admin['password'];
-        // echo $password;
-        // echo $dbPassword;
 
         if (!$password === $dbPassword) {
             $html = <<< HTML

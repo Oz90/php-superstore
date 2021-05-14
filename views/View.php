@@ -68,7 +68,7 @@ class View
 
         echo $html;
     }
-    
+
     public function viewAdminProduct($product)
     {
         $html = <<<HTML
@@ -94,9 +94,9 @@ class View
 
     public function viewAllProducts($products)
     {
-        
+
         foreach ($products as $product) {
-            if(isset($_SESSION["admin"]) && $_SESSION["admin"] === true){
+            if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
                 $this->viewAdminProduct($product);
             } else {
                 $this->viewOneProduct($product);
@@ -111,7 +111,7 @@ class View
         // $this->viewOneProduct($product);
         $this->viewEditForm($product);
     }
-    
+
     public function viewOrderPage($product)
     {
         $this->viewOneProduct($product);
@@ -190,6 +190,16 @@ class View
         echo $html;
     }
 
+    // public function confirmUpdateMessage($product)
+    // {
+    //     $this->printMessage(
+    //         "<h4>Du har uppdaterat $product[name]</h4>
+    //         <p>Som har id: $product[id]</p>
+    //         </div> <!-- col  avslutar Beställningsformulär -->
+    //         ",
+    //         "success"
+    //     );
+    // }
     public function viewConfirmMessage($customer, $lastInsertId)
     {
         $this->printMessage(

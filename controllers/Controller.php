@@ -225,7 +225,7 @@ class Controller
         $product_image          = $this->sanitize($_POST['product_image']);
         $product_category       = $this->sanitize($_POST['product_category']);
 
-        $confirm = $this->model->updateProduct(
+        $this->model->updateProduct(
             $product_id,
             $product_name,
             $product_price,
@@ -234,12 +234,13 @@ class Controller
             $product_category
         );
 
+
+        header("location: ?page=admin&view=products");
         // if ($confirm) {
-        //     $customer = $confirm['customer'];
-        //     $lastInsertId = $confirm['lastInsertId'];
-        //     $this->view->viewConfirmMessage($customer, $lastInsertId);
+        //     $product = $confirm['product'];
+        //     $this->view->confirmUpdateMessage($product);
         // } else {
-        //     $this->view->viewErrorMessage($customer_id);
+        //     $this->view->viewErrorMessage($product_id);
         // }
     }
 
