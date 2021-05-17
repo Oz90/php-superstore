@@ -1,7 +1,7 @@
 </div>
 <hr>
 <p class="text-center">
-    <a href="?page=admin">Welcome Admin</a>
+    <a href="?page=admin&view=create">Create Product</a>
 </p>
 <hr>
 <p class="text-center">

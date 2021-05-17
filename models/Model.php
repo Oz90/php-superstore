@@ -113,6 +113,39 @@ class Model
         return array('product' => $product);
     }
 
+    public function createProduct(
+        $product_name,
+        $product_price,
+        $product_description,
+        $product_image,
+        $product_category
+    ) {
+        $statement =
+            "INSERT INTO product (
+                name, 
+                price, 
+                description,
+                image,
+                category
+            ) VALUES (
+                :product_name,
+                :product_price,
+                :product_description,
+                :product_image,
+                :product_category
+            )";
+
+        $parameters = array(
+            ':product_name' => $product_name,
+            ':product_price' => $product_price,
+            ':product_description' => $product_description,
+            ':product_image' => $product_image,
+            ':product_category' => $product_category
+        );
+
+        $this->db->insert($statement, $parameters);
+    }
+
 
     public function loginAdmin($email, $password)
     {
@@ -162,7 +195,7 @@ class Model
         if (!$customer) {
             $html = <<< HTML
             <div class="my-2 alert alert-danger">
-                Email already taken!
+                Email not registered!
             </div>
             HTML;
 
@@ -185,8 +218,10 @@ class Model
             exit();
         }
 
-        if (!isset($_SESSION))
+        if (!isset($_SESSION)) {
+            session_set_cookie_params(0);
             session_start();
+        }
         // Store data in session variables
         $_SESSION["loggedin"] = true;
         $_SESSION["id"] = $userId;

@@ -79,7 +79,7 @@ class View
                             <div class="card-title text-center">
                                 <h4>$product[name]</h4>
                                 <h5>Pris: $product[price] kr</h5>
-                                <a href="?page=admin&view=product&id=$product[id]">
+                                <a href="?page=admin&view=edit&id=$product[id]">
                                     <button>Edit</button>
                                 </a>                                    
                             </div>
@@ -91,10 +91,8 @@ class View
         echo $html;
     }
 
-
     public function viewAllProducts($products)
     {
-
         foreach ($products as $product) {
             if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
                 $this->viewAdminProduct($product);
@@ -106,6 +104,10 @@ class View
 
 
 
+    public function viewCreatePage()
+    {
+        $this->viewCreateForm();
+    }
     public function viewEditPage($product)
     {
         // $this->viewOneProduct($product);
@@ -118,7 +120,47 @@ class View
         $this->viewOrderForm($product);
     }
 
+    public function viewCreateForm()
+    {
 
+        $html = <<<HTML
+            <div class="col-md-6">
+                <form action="#" method="post">
+                    <label for="product_name">Product Name</label>
+                    <input type="text" name="product_name" required 
+                            class="form-control form-control-lg my-2">
+
+                    <label for="product_price">Product Price</label>
+                    <input type="number" name="product_price" required 
+                            class="form-control form-control-lg my-2" 
+                            >
+                    
+                    <label for="product_description">Product Description</label>
+                    <input type="text" name="product_description" required 
+                            class="form-control form-control-lg my-2" 
+                            >
+
+                    <label for="product_image">Product Image URL</label>
+                    <input type="text" name="product_image" required 
+                            class="form-control form-control-lg my-2" 
+                            >
+
+                    <label for="product_category">Product Category</label>
+                    <select name="product_category" class="form-control form-control-lg my-2" required>
+                        <option value="mens clothing">Mens Clothing</option>
+                        <option value="womens clothing">Womens Clothing</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="jewelery">Jewelery</option>
+                    </select>
+                    <input type="submit" name="create" class="form-control my-2 btn btn-lg btn-outline-success" 
+                            value="Create Product">
+                </form>
+                
+            <!-- col avslutas efter ett meddelande från viewConfirmMessage eller viewErrorMessage -->
+        HTML;
+
+        echo $html;
+    }
     public function viewEditForm($product)
     {
 

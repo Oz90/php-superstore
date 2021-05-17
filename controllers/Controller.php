@@ -142,7 +142,7 @@ class Controller
             if ($view === "products") {
                 $this->getAdminProducts();
             }
-            if ($view === "product") {
+            if ($view === "edit") {
                 $this->editProduct();
             }
             if ($view === "orders") {
@@ -150,6 +150,9 @@ class Controller
             }
             if ($view === "delete") {
                 $this->deleteProduct();
+            }
+            if ($view === "create") {
+                $this->createProduct();
             }
         }
 
@@ -197,6 +200,15 @@ class Controller
 
         $this->getFooter();
     }
+
+    private function createProduct()
+    {
+        $this->getHeader("Create Product");
+        $this->view->viewCreatePage();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST')
+            $this->processCreateForm();
+    }
+
     private function order()
     {
         $this->getHeader("Beställning");
@@ -251,12 +263,25 @@ class Controller
 
 
         header("location: ?page=admin&view=products");
-        // if ($confirm) {
-        //     $product = $confirm['product'];
-        //     $this->view->confirmUpdateMessage($product);
-        // } else {
-        //     $this->view->viewErrorMessage($product_id);
-        // }
+    }
+    private function processCreateForm()
+    {
+        $product_name           = $this->sanitize($_POST['product_name']);
+        $product_price          = $this->sanitize($_POST['product_price']);
+        $product_description    = $this->sanitize($_POST['product_description']);
+        $product_image          = $this->sanitize($_POST['product_image']);
+        $product_category       = $this->sanitize($_POST['product_category']);
+
+        $this->model->createProduct(
+            $product_name,
+            $product_price,
+            $product_description,
+            $product_image,
+            $product_category
+        );
+
+
+        header("location: ?page=admin&view=products");
     }
 
     private function processOrderForm()
