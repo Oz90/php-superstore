@@ -36,6 +36,9 @@ class Controller
             case "admin":
                 $this->admin();
                 break;
+            case "shoppingcart":
+                $this->shoppingCart();
+                break;
             case "logout":
                 $this->logout();
                 break;
@@ -164,6 +167,12 @@ class Controller
         $this->getHeader("Välkommen");
         $products = $this->model->fetchAllProducts();
         $this->view->viewAllProducts($products);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $this->sanitize($_POST['product_id']);
+            $this->model->addToCart($id);
+        }
+
         $this->getFooter();
     }
 
@@ -219,8 +228,10 @@ class Controller
         if ($product)
             $this->view->viewOrderPage($product);
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            $this->processOrderForm();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $this->sanitize($_POST['product_id']);
+            $this->model->addToCart($id);
+        }
 
         $this->getFooter();
     }
@@ -284,7 +295,7 @@ class Controller
         header("location: ?page=admin&view=products");
     }
 
-    private function processOrderForm()
+    /*private function processOrderForm()
     {
         $product_id    = $this->sanitize($_POST['product_id']);
         $customer_id = $this->sanitize($_POST['customer_id']);
@@ -297,6 +308,11 @@ class Controller
         } else {
             $this->view->viewErrorMessage($customer_id);
         }
+    }*/
+
+    private function shoppingCart()
+    {
+        $this->view->viewCartPage();
     }
 
     /**

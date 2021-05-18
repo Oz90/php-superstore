@@ -177,8 +177,10 @@ class Model
             exit();
         }
 
-        if (!isset($_SESSION))
+        if (!isset($_SESSION)) {
+            session_set_cookie_params(0);
             session_start();
+        }
 
         // Store data in session variables
         $_SESSION["loggedin"] = true;
@@ -187,6 +189,13 @@ class Model
         $_SESSION["admin"] = true;
 
         header("location: ?page=admin");
+    }
+
+    public function addToCart($id)
+    {
+        if (isset($id)) {
+            array_push($_SESSION['shoppingcart'], $id);
+        }
     }
 
     public function loginCustomer($email, $password)
@@ -226,6 +235,7 @@ class Model
         $_SESSION["loggedin"] = true;
         $_SESSION["id"] = $userId;
         $_SESSION["email"] = $email;
+        $_SESSION['shoppingcart'] = array();
 
         header("location: index.php");
     }

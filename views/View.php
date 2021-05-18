@@ -32,6 +32,10 @@ class View
     {
         include_once("views/include/admin.php");
     }
+    public function viewCartPage()
+    {
+        include_once("views/include/cart.php");
+    }
 
     public function adminViewProduct()
     {
@@ -51,7 +55,7 @@ class View
         $html = <<<HTML
         
             <div class="col-md-6">
-                <a href="?page=order&id=$product[id]">
+                <a class="text-decoration-none" href="?page=order&id=$product[id]">
                     <div class="card m-1">
                         <img class="card-img-top" src="$product[image]" 
                              alt="$product[name]">
@@ -59,6 +63,10 @@ class View
                             <div class="card-title text-center">
                                 <h4>$product[name]</h4>
                                 <h5>Pris: $product[price] kr</h5>
+                                <form method="post">
+                                    <input type="hidden" name="product_id" value="$product[id]">
+                                    <input type="submit" value="Lägg till produkt">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -117,12 +125,11 @@ class View
     public function viewOrderPage($product)
     {
         $this->viewOneProduct($product);
-        $this->viewOrderForm($product);
+        //$this->viewOrderForm($product);
     }
 
     public function viewCreateForm()
     {
-
         $html = <<<HTML
             <div class="col-md-6">
                 <form action="#" method="post">
@@ -210,7 +217,7 @@ class View
         echo $html;
     }
 
-    public function viewOrderForm($product)
+    /*public function viewOrderForm($product)
     {
 
         $html = <<<HTML
@@ -231,7 +238,7 @@ class View
         HTML;
 
         echo $html;
-    }
+    }*/
 
     // public function confirmUpdateMessage($product)
     // {
