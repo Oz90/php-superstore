@@ -63,9 +63,9 @@ class View
                             <div class="card-title text-center">
                                 <h4>$product[name]</h4>
                                 <h5>Pris: $product[price] kr</h5>
-                                <form method="post">
-                                    <input type="hidden" name="product_id" value="$product[id]">
-                                    <input type="submit" value="Lägg till produkt">
+                                 <form method='post'>
+                                    <input type='hidden' name='product_id' value='$product[id]'>
+                                    <input type='submit' value='Lägg till produkt'>
                                 </form>
                             </div>
                         </div>
@@ -94,6 +94,44 @@ class View
                         </div>
                     </div>
             </div>  <!-- col -->
+        HTML;
+
+        echo $html;
+    }
+
+    public function tableHeader()
+    {
+        $html = <<<HTML
+                    <table class="table">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                        </tr>
+                    <tbody>
+                HTML;
+
+        echo $html;
+    }
+
+    public function tableFooter($sum)
+    {
+        echo "
+        <tr>
+            <td>Total Sum:</td>
+            <td>$sum $</td>
+        </tr>
+        </tbody>
+        </table>
+        ";
+    }
+
+    public function viewCartProduct($product)
+    {
+        $html = <<<HTML
+                    <tr>
+                        <td>$product[name]</td>
+                        <td>$product[price]$</td>
+                    </tr>
         HTML;
 
         echo $html;

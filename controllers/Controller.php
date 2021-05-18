@@ -312,7 +312,26 @@ class Controller
 
     private function shoppingCart()
     {
-        $this->view->viewCartPage();
+        $this->getHeader('Shoppingcart');
+        $productsArray = array();
+        $totalPrice = 0;
+        if (isset($_SESSION['shoppingcart'])) {
+            $shoppingCartItems = $_SESSION['shoppingcart'];
+
+
+            foreach ($shoppingCartItems as $item) {
+                $product = $this->model->fetchProductById($item);
+                $totalPrice += $product['price'];
+                array_push($productsArray, $product);
+            }
+
+            $this->view->tableHeader();
+            foreach ($productsArray as $product) {
+                $this->view->viewCartProduct($product);
+            }
+            $this->view->tableFooter($totalPrice);
+            $this->getFooter();
+        }
     }
 
     /**

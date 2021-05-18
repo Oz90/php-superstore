@@ -235,7 +235,7 @@ class Model
         $_SESSION["loggedin"] = true;
         $_SESSION["id"] = $userId;
         $_SESSION["email"] = $email;
-        $_SESSION['shoppingcart'] = array();
+        $_SESSION["shoppingcart"] = array();
 
         header("location: index.php");
     }
