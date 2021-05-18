@@ -55,7 +55,7 @@ class View
         $html = <<<HTML
         
             <div class="col-md-6">
-                <a class="text-decoration-none" href="?page=order&id=$product[id]">
+                <a class="text-decoration-none" href="?page=product-page&id=$product[id]">
                     <div class="card m-1">
                         <img class="card-img-top" src="$product[image]" 
                              alt="$product[name]">
@@ -122,7 +122,7 @@ class View
         $this->viewEditForm($product);
     }
 
-    public function viewOrderPage($product)
+    public function viewDetailPage($product)
     {
         $this->viewOneProduct($product);
         //$this->viewOrderForm($product);

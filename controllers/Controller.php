@@ -24,8 +24,8 @@ class Controller
             case "about":
                 $this->about();
                 break;
-            case "order":
-                $this->order();
+            case "product-page":
+                $this->productPage();
                 break;
             case "login":
                 $this->login("Customer");
@@ -218,7 +218,7 @@ class Controller
             $this->processCreateForm();
     }
 
-    private function order()
+    private function productPage()
     {
         $this->getHeader("Beställning");
 
@@ -226,7 +226,7 @@ class Controller
         $product = $this->model->fetchProductById($id);
 
         if ($product)
-            $this->view->viewOrderPage($product);
+            $this->view->viewDetailPage($product);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $this->sanitize($_POST['product_id']);
@@ -245,7 +245,7 @@ class Controller
 
         $new_user = $this->model->insertCustomer($name, $email, $password);
 
-        // $this->view->viewOrderPage($product);
+        // $this->view->viewDetailPage($product);
 
         /*   if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $this->processOrderForm();*/
