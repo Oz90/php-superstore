@@ -72,16 +72,18 @@ class ProductController
             // print_r($shoppingCartQuantities);
             foreach (array_keys($shoppingCartItems) as $item) {
                 $product = $this->model->fetchProductById($item);
-                $totalPrice += $product['price'];
                 array_push($productsArray, $product);
             }
 
-            print_r($shoppingCartQuantities);
-            echo "<br>";
             print_r($productsArray);
+            echo "<br>";
+     
             $this->view->tableHeader();
-            foreach ($productsArray as $product) {
-                $this->view->viewCartProduct($product);
+            foreach ($productsArray as $index=>$product) {
+                $quantity=$shoppingCartQuantities[$index];
+                 $price = $quantity * $product['price'];
+                 $totalPrice += $price;
+                $this->view->viewCartProduct($product, $quantity, $price);
             }
             $this->view->tableFooter($totalPrice);
             $this->getFooter();

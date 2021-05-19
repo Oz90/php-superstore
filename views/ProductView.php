@@ -103,20 +103,25 @@ class ProductView
         <tr>
             <td>Total Sum:</td>
             <td></td>
-            <td>$sum $</td>
+            <td>$ $sum </td>
+            
         </tr>
         </tbody>
         </table>
+        <form> 
+        <input type='submit' value='Order'>
+        </form>
         ";
     }
 
-    public function viewCartProduct($product)
+    public function viewCartProduct($product, $quantity, $price)
     {
         $html = <<<HTML
                     <tr>
                         <td>$product[name]</td>
-                        <td>XXXXX</td>
-                        <td>$product[price]$</td>
+                        <td>$quantity</td>
+                        <td>$ $price </td>
+
                     </tr>
         HTML;
 
