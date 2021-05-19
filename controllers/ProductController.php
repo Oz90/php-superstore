@@ -63,43 +63,44 @@ class ProductController
         $totalPrice = 0;
         if (isset($_SESSION['shoppingcart'])) {
             $shoppingCartItems = array_count_values($_SESSION['shoppingcart']);
-            // $shoppingCartCount = array_count_values($_SESSION['shoppingcart']);
             $shoppingCartQuantities = array_values($shoppingCartItems);
 
 
-            // print_r($shoppingCartItems);
-            // echo "<br>";
-            // print_r($shoppingCartQuantities);
             foreach (array_keys($shoppingCartItems) as $item) {
                 $product = $this->model->fetchProductById($item);
                 array_push($productsArray, $product);
             }
 
-            echo "<br>";
-     
             $this->view->tableHeader();
+
             foreach ($productsArray as $index=>$product) {
                 $quantity=$shoppingCartQuantities[$index];
-                 $price = $quantity * $product['price'];
-                 $totalPrice += $price;
+                $price = $quantity * $product['price'];
+                $totalPrice += $price;
                 $this->view->viewCartProduct($product, $quantity, $price);
             }
+
             $this->view->tableFooter($totalPrice);
             $this->getFooter();
 
 
-
-            //*Test
             if(($_SERVER['REQUEST_METHOD']) === 'POST') {
-               $customer_id = intval($_SESSION['id']);
-              //  print_r($_SESSION['shoppingcart']);
-
-                $this->model->insertOrder($customer_id, $totalPrice);
+                
+                $customer_id = intval($_SESSION['id']);
+                $order_id = $this->model->insertOrder($customer_id, $totalPrice);
+                
+                foreach($productsArray as $index=>$product) {
+                    $quantity=$shoppingCartQuantities[$index];
+                    $product_id = $product['id'];
+                    $this->model->insertOrderItem($order_id, $product_id, $quantity);
+                }
+                
+                $_SESSION['shoppingcart'] = array();
+                
+                header('location: index.php');
             }
         }
     }
-
- 
 
     /**
      * Sanitize Inputs

@@ -36,16 +36,31 @@ class ProductModel
     public function insertOrder($customer_id, $totalPrice)
     {
       
-        $statement = "INSERT INTO order (customer_id, total_price)  
+        $statement = "INSERT INTO `order` (customer_id, total_price)  
                       VALUES (:customer_id, :total_price)";
+        
         $parameters = array(
             ':customer_id' => $customer_id,
             ':total_price' => $totalPrice
         );
 
         // Ordernummer
-      $this->db->insert($statement, $parameters);
+        $order_id = $this->db->insert($statement, $parameters);
+ 
+        return $order_id;
+    }
 
-      //  return array('customer' => $customer, 'lastInsertId' => $lastInsertId);*/
+    public function insertOrderItem($order_id, $product_id, $quantity)
+    {
+        
+        $statement = "INSERT INTO order_item (order_id, product_id, quantity)  
+                      VALUES (:order_id, :product_id, :quantity)";
+        $parameters = array(
+            ':order_id' => $order_id,
+            ':product_id' => $product_id,
+            ':quantity' => $quantity
+        );
+
+        $this->db->insert($statement, $parameters);          
     }
 }

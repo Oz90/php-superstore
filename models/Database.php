@@ -56,7 +56,7 @@ class Database
     public function insert($statement, $input_parameters = [])
     {
         $this->execute($statement, $input_parameters);
-     //   return $this->conn->lastInsertId();
+        return $this->conn->lastInsertId();
         // https://www.php.net/manual/en/pdo.lastinsertid
     }
 
