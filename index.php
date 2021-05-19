@@ -5,18 +5,18 @@ session_start();
 // Models
 require_once("models/Database.php");
 require_once("models/Model.php");
-require_once("models/adminModel.php");
-require_once("models/productModel.php");
+require_once("models/AdminModel.php");
+require_once("models/ProductModel.php");
 
 // Views
 require_once("views/View.php");
-require_once("views/adminView.php");
-require_once("views/productView.php");
+require_once("views/AdminView.php");
+require_once("views/ProductView.php");
 
 // Controllers
 require_once("controllers/Controller.php");
-require_once("controllers/adminController.php");
-require_once("controllers/productController.php");
+require_once("controllers/AdminController.php");
+require_once("controllers/ProductController.php");
 
 //!: Skapa instans av databas
 $database   = new Database("superstore", "root", "root");
@@ -76,4 +76,3 @@ switch ($page) {
         $productController->getAllProducts();
 }
 
-//*Todo Skapat en local branch 

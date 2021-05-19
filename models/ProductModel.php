@@ -30,4 +30,22 @@ class ProductModel
             array_push($_SESSION['shoppingcart'], $id);
         }
     }
+
+
+//*Test
+    public function insertOrder($customer_id, $totalPrice)
+    {
+      
+        $statement = "INSERT INTO order (customer_id, total_price)  
+                      VALUES (:customer_id, :total_price)";
+        $parameters = array(
+            ':customer_id' => $customer_id,
+            ':total_price' => $totalPrice
+        );
+
+        // Ordernummer
+      $this->db->insert($statement, $parameters);
+
+      //  return array('customer' => $customer, 'lastInsertId' => $lastInsertId);*/
+    }
 }

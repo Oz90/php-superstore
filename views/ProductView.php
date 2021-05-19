@@ -108,7 +108,7 @@ class ProductView
         </tr>
         </tbody>
         </table>
-        <form> 
+        <form method='post'>
         <input type='submit' value='Order'>
         </form>
         ";

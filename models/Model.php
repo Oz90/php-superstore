@@ -60,25 +60,6 @@ class Model
     }
 
 
-
-    public function insertOrder($customer_id, $order_id)
-    {
-        $customer = $this->fetchCustomerById($customer_id);
-        if (!$customer) return false;
-
-        $statement = "INSERT INTO order (customer_id, order_id)  
-                      VALUES (:customer_id, :order_id)";
-        $parameters = array(
-            ':customer_id' => $customer_id,
-            ':order_id' => $order_id
-        );
-
-        // Ordernummer
-        $lastInsertId = $this->db->insert($statement, $parameters);
-
-        return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
-    }
-
     public function updateProduct(
         $product_id,
         $product_name,

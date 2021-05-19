@@ -75,7 +75,6 @@ class ProductController
                 array_push($productsArray, $product);
             }
 
-            print_r($productsArray);
             echo "<br>";
      
             $this->view->tableHeader();
@@ -87,8 +86,20 @@ class ProductController
             }
             $this->view->tableFooter($totalPrice);
             $this->getFooter();
+
+
+
+            //*Test
+            if(($_SERVER['REQUEST_METHOD']) === 'POST') {
+               $customer_id = intval($_SESSION['id']);
+              //  print_r($_SESSION['shoppingcart']);
+
+                $this->model->insertOrder($customer_id, $totalPrice);
+            }
         }
     }
+
+ 
 
     /**
      * Sanitize Inputs
