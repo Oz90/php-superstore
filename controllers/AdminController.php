@@ -11,18 +11,6 @@ class AdminController
         $this->view = $view;
     }
 
-
-
-    public function logout()
-    {
-        // Destroy the session.
-        session_destroy();
-
-        // Redirect to login page
-        header("location: index.php");
-        exit;
-    }
-
     public function login($userType)
     {
         // Check if the user is already logged in, if yes then redirect him to welcome page
@@ -73,7 +61,7 @@ class AdminController
         // Check if the user is already logged in, if yes then redirect him to welcome page
         if (!isset($_SESSION["admin"]) && !$_SESSION["admin"] === true) {
             header("location: index.php");
-            exit;
+            exit();
         }
 
         $this->getHeader("Admin");
@@ -183,8 +171,6 @@ class AdminController
             $product_image,
             $product_category
         );
-
-
         header("location: ?page=admin&view=products");
     }
 
