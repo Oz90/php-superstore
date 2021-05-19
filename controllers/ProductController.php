@@ -21,7 +21,6 @@ class ProductController
         $this->view->viewFooter();
     }
 
-
     public function getAllProducts()
     {
         $this->getHeader("Välkommen");
@@ -35,7 +34,6 @@ class ProductController
 
         $this->getFooter();
     }
-
 
     public function productPage()
     {
@@ -55,7 +53,6 @@ class ProductController
         $this->getFooter();
     }
 
-
     public function shoppingCart()
     {
         $this->getHeader('Shoppingcart');
@@ -64,7 +61,6 @@ class ProductController
         if (isset($_SESSION['shoppingcart'])) {
             $shoppingCartItems = array_count_values($_SESSION['shoppingcart']);
             $shoppingCartQuantities = array_values($shoppingCartItems);
-
 
             foreach (array_keys($shoppingCartItems) as $item) {
                 $product = $this->model->fetchProductById($item);
@@ -102,10 +98,6 @@ class ProductController
         }
     }
 
-    /**
-     * Sanitize Inputs
-     * https://www.w3schools.com/php/php_form_validation.asp
-     */
     public function sanitize($text)
     {
         $text = trim($text);
