@@ -82,6 +82,47 @@ class ProductView
         }
     }
 
+    public function tableHeader()
+    {
+        $html = <<<HTML
+                    <table class="table">
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    <tbody>
+                HTML;
+
+        echo $html;
+    }
+
+    public function tableFooter($sum)
+    {
+        echo "
+        <tr>
+            <td>Total Sum:</td>
+            <td></td>
+            <td>$sum $</td>
+        </tr>
+        </tbody>
+        </table>
+        ";
+    }
+
+    public function viewCartProduct($product)
+    {
+        $html = <<<HTML
+                    <tr>
+                        <td>$product[name]</td>
+                        <td>XXXXX</td>
+                        <td>$product[price]$</td>
+                    </tr>
+        HTML;
+
+        echo $html;
+    }
+
     public function viewDetailPage($product)
     {
         $this->viewOneProduct($product);

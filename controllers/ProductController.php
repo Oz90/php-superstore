@@ -58,7 +58,34 @@ class ProductController
 
     public function shoppingCart()
     {
-        $this->view->viewCartPage();
+        $this->getHeader('Shoppingcart');
+        $productsArray = array();
+        $totalPrice = 0;
+        if (isset($_SESSION['shoppingcart'])) {
+            $shoppingCartItems = array_count_values($_SESSION['shoppingcart']);
+            // $shoppingCartCount = array_count_values($_SESSION['shoppingcart']);
+            $shoppingCartQuantities = array_values($shoppingCartItems);
+
+
+            // print_r($shoppingCartItems);
+            // echo "<br>";
+            // print_r($shoppingCartQuantities);
+            foreach (array_keys($shoppingCartItems) as $item) {
+                $product = $this->model->fetchProductById($item);
+                $totalPrice += $product['price'];
+                array_push($productsArray, $product);
+            }
+
+            print_r($shoppingCartQuantities);
+            echo "<br>";
+            print_r($productsArray);
+            $this->view->tableHeader();
+            foreach ($productsArray as $product) {
+                $this->view->viewCartProduct($product);
+            }
+            $this->view->tableFooter($totalPrice);
+            $this->getFooter();
+        }
     }
 
     /**
