@@ -23,7 +23,6 @@ class ProductController
         $this->view->viewFooter();
     }
 
-
     public function getAllProducts()
     {
         $this->getHeader("Välkommen");
@@ -46,7 +45,6 @@ class ProductController
         $this->getFooter();
     }
 
-
     public function productPage()
     {
         $this->getHeader("Beställning");
@@ -66,7 +64,6 @@ class ProductController
         $this->getFooter();
     }
 
-
     public function shoppingCart()
     {
         $this->getHeader('Shoppingcart');
@@ -76,7 +73,6 @@ class ProductController
         if (isset($_SESSION['shoppingcart'])) {
             $shoppingCartItems = array_count_values($_SESSION['shoppingcart']);
             $shoppingCartQuantities = array_values($shoppingCartItems);
-
 
             foreach (array_keys($shoppingCartItems) as $item) {
                 $product = $this->model->fetchProductById($item);
@@ -113,4 +109,15 @@ class ProductController
         }
     }
 
+<<<<<<< HEAD
 }
+=======
+    public function sanitize($text)
+    {
+        $text = trim($text);
+        $text = stripslashes($text);
+        $text = htmlspecialchars($text);
+        return $text;
+    }
+}
+>>>>>>> d7d26afe536c641a940debcc655c15bbc33203b1
