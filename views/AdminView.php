@@ -12,16 +12,6 @@ class AdminView
         include_once("views/include/footer.php");
     }
 
-    public function viewLoginPage()
-    {
-        include_once("views/include/login.php");
-    }
-
-    public function adminViewProduct()
-    {
-        echo "Viewing product page";
-    }
-
     public function viewAdminPage()
     {
         $html = <<<HTML
@@ -87,33 +77,6 @@ class AdminView
         }
     }
 
-    public function viewOneProduct($product)
-    {
-        $html = <<<HTML
-        
-            <div class="col-md-6">
-                <a class="text-decoration-none" href="?page=product-page&id=$product[id]">
-                    <div class="card m-1">
-                        <img class="card-img-top" src="$product[image]" 
-                             alt="$product[name]">
-                        <div class="card-body">
-                            <div class="card-title text-center">
-                                <h4>$product[name]</h4>
-                                <h5>Pris: $product[price] kr</h5>
-                                <form method="post">
-                                    <input type="hidden" name="product_id" value="$product[id]">
-                                    <input type="submit" value="Lägg till produkt">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>  <!-- col -->
-        HTML;
-
-        echo $html;
-    }
-
 
     public function viewAdminProduct($product)
     {
@@ -142,8 +105,6 @@ class AdminView
         foreach ($products as $product) {
             if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
                 $this->viewAdminProduct($product);
-            } else {
-                $this->viewOneProduct($product);
             }
         }
     }

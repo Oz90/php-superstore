@@ -88,6 +88,7 @@ class AdminController
     }
 
 
+
     private function editProduct()
     {
         $this->getHeader("Edit Product");

@@ -21,9 +21,9 @@ class AdminModel
         return $orders;
     }
 
+
     public function updateOrders($order_id, $is_shipped)
     {
-        echo '<br>';
         $statement =
             "UPDATE `order` SET 
             is_shipped = :is_shipped
@@ -38,13 +38,13 @@ class AdminModel
         //   return array('order' => $order_id);
     }
 
-    public function fetchOrderById($order_id)
-    {
-        $statement = "SELECT * FROM `order` WHERE order_id=:order_id";
-        $parameters = array(':order_id' => $order_id);
-        $order = $this->db->select($statement, $parameters);
-        return $order;
-    }
+    // public function fetchOrderById($order_id)
+    // {
+    //     $statement = "SELECT * FROM `order` WHERE order_id=:order_id";
+    //     $parameters = array(':order_id' => $order_id);
+    //     $order = $this->db->select($statement, $parameters);
+    //     return $order;
+    // }
 
     public function fetchProductById($id)
     {
@@ -60,15 +60,6 @@ class AdminModel
         $params = array(":id" => $id);
         $product = $this->db->delete($statement, $params);
         // return $product[0] ?? false;
-    }
-
-    public function fetchAdminByEmail($email)
-    {
-
-        $statement = "SELECT * FROM admin WHERE email=:email";
-        $parameters = array(':email' => $email);
-        $admin = $this->db->select($statement, $parameters);
-        return $admin[0] ?? false;
     }
 
     public function updateProduct(
