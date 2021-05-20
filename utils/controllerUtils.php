@@ -1,8 +1,8 @@
 <?php
 
-class Utils {
-
-        /**
+class ControllerUtils
+{
+    /**
      * Sanitize Inputs
      * https://www.w3schools.com/php/php_form_validation.asp
      */
@@ -13,6 +13,4 @@ class Utils {
         $text = htmlspecialchars($text);
         return $text;
     }
-
-
 }

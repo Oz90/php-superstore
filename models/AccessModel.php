@@ -1,6 +1,6 @@
 <?php
 
-class Model
+class AccessModel
 {
 
     private $db;
@@ -24,17 +24,8 @@ class Model
         return $product[0] ?? false;
     }
 
-    public function deleteProductById($id)
-    {
-        $statement = "DELETE FROM product WHERE id = :id";
-        $params = array(":id" => $id);
-        $product = $this->db->delete($statement, $params);
-        // return $product[0] ?? false;
-    }
-
     public function fetchCustomerById($id)
     {
-
         $statement = "SELECT * FROM customers WHERE customer_id=:id";
         $parameters = array(':id' => $id);
         $customer = $this->db->select($statement, $parameters);
@@ -43,7 +34,6 @@ class Model
 
     public function fetchCustomerByEmail($email)
     {
-
         $statement = "SELECT * FROM customer WHERE email=:email";
         $parameters = array(':email' => $email);
         $customer = $this->db->select($statement, $parameters);
@@ -52,7 +42,6 @@ class Model
 
     public function fetchAdminByEmail($email)
     {
-
         $statement = "SELECT * FROM admin WHERE email=:email";
         $parameters = array(':email' => $email);
         $admin = $this->db->select($statement, $parameters);
@@ -94,43 +83,8 @@ class Model
         return array('product' => $product);
     }
 
-    public function createProduct(
-        $product_name,
-        $product_price,
-        $product_description,
-        $product_image,
-        $product_category
-    ) {
-        $statement =
-            "INSERT INTO product (
-                name, 
-                price, 
-                description,
-                image,
-                category
-            ) VALUES (
-                :product_name,
-                :product_price,
-                :product_description,
-                :product_image,
-                :product_category
-            )";
-
-        $parameters = array(
-            ':product_name' => $product_name,
-            ':product_price' => $product_price,
-            ':product_description' => $product_description,
-            ':product_image' => $product_image,
-            ':product_category' => $product_category
-        );
-
-        $this->db->insert($statement, $parameters);
-    }
-
-
     public function loginAdmin($email, $password)
     {
-
         $admin = $this->fetchAdminByEmail($email);
         if (!$admin) {
             $html = <<< HTML
@@ -163,7 +117,6 @@ class Model
             session_start();
         }
 
-        // Store data in session variables
         $_SESSION["loggedin"] = true;
         $_SESSION["id"] = $adminId;
         $_SESSION["email"] = $email;
@@ -176,8 +129,7 @@ class Model
     {
         if (isset($id)) {
             array_push($_SESSION['shoppingcart'], $id);
-                header("location: index.php");
-
+            header("location: index.php");
         }
     }
 
@@ -223,9 +175,6 @@ class Model
         header("location: index.php");
     }
 
-
-
-
     public function insertCustomer($name, $email, $password)
     {
         $customer = $this->fetchCustomerByEmail($email);
@@ -248,9 +197,5 @@ class Model
             ':password' => password_hash($password, PASSWORD_DEFAULT)
         );
         $this->db->insert($statement, $parameters);
-        // Ordernummer
-        //        $lastInsertId = $this->db->insert($statement, $parameters);
-
-        //   return array('customer' => $customer, 'lastInsertId' => $lastInsertId);
     }
 }

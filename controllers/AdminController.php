@@ -13,40 +13,6 @@ class AdminController
         $this->utils = $utils;
     }
 
-    public function login($userType)
-    {
-        // Check if the user is already logged in, if yes then redirect him to welcome page
-        if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-            header("location: index.php");
-            exit;
-        }
-
-        $this->getHeader("Login " . $userType);
-        $this->view->viewLoginPage();
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $this->loginUser($userType);
-        }
-        $this->getFooter();
-    }
-
-    private function loginUser($userType)
-    {
-
-        $email = $this->utils->sanitize($_POST['email']);
-        $password = $this->utils->sanitize($_POST['password']);
-        // print_r($name);
-
-        if ($userType === "Admin") {
-            $this->model->loginAdmin($email, $password);
-        } elseif ($userType === "Customer") {
-            $this->model->loginCustomer($email, $password);
-        }
-
-        $this->getFooter();
-    }
-
     private function getHeader($title)
     {
         $this->view->viewHeader($title);
@@ -59,8 +25,6 @@ class AdminController
 
     public function admin()
     {
-
-        // Check if the user is already logged in, if yes then redirect him to welcome page
         if (!isset($_SESSION["admin"]) && !$_SESSION["admin"] === true) {
             header("location: index.php");
             exit();
@@ -79,13 +43,7 @@ class AdminController
                 $this->editProduct();
             }
             if ($view === "orders") {
-               // $orders = $this->model->fetchAllOrders();
-
-      
-
                 $this->updateOrders();
-              
-           
             }
             if ($view === "delete") {
                 $this->deleteProduct();
@@ -97,32 +55,23 @@ class AdminController
         $this->getFooter();
     }
 
-    private function updateOrders() {
-
+    private function updateOrders()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-
-         $order_id = $this->utils->sanitize($_POST['order_id']);
-         $is_shipped = $this->utils->sanitize($_POST['order_shipped']);
+            $order_id = $this->utils->sanitize($_POST['order_id']);
+            $is_shipped = $this->utils->sanitize($_POST['order_shipped']);
             echo "You Just updated: ";
             echo '<br>';
             echo "ORDER ID: " .  $order_id;
             echo '<br>';
             echo "ORDER SHIPPED: " . $is_shipped;
-            $this->model->updateOrders($order_id, $is_shipped); 
-                   $orders = $this->model->fetchAllOrders();
-                    $this->view->viewAllOrders($orders);
-
-            
-
-
-        }
-        else {
+            $this->model->updateOrders($order_id, $is_shipped);
+            $orders = $this->model->fetchAllOrders();
+            $this->view->viewAllOrders($orders);
+        } else {
             $orders = $this->model->fetchAllOrders();
             $this->view->viewAllOrders($orders);
         }
-       
- 
     }
 
     private function getAdminProducts()
@@ -209,6 +158,4 @@ class AdminController
         );
         header("location: ?page=admin&view=products");
     }
-
-
 }

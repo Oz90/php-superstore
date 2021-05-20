@@ -1,5 +1,5 @@
 <?php
-class Controller
+class AccessController
 {
 
     private $model;
@@ -14,12 +14,10 @@ class Controller
     }
     public function login($userType)
     {
-        // Check if the user is already logged in, if yes then redirect him to welcome page
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             header("location: index.php");
-            exit;
+            exit();
         }
-
 
         $this->getHeader("Login " . $userType);
         $this->view->viewLoginPage();
@@ -35,7 +33,7 @@ class Controller
     {
         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             header("location: index.php");
-            exit;
+            exit();
         }
         $this->getHeader("registration");
         $this->view->viewRegistrationPage();
@@ -47,20 +45,15 @@ class Controller
 
     public function logout()
     {
-        
-        // Destroy the session.
         session_destroy();
-        // Redirect to login page
         header("location: index.php");
-        exit;
+        exit();
     }
 
     private function loginUser($userType)
     {
-
         $email = $this->utils->sanitize($_POST['email']);
         $password = $this->utils->sanitize($_POST['password']);
-        // print_r($name);
 
         if ($userType === "Admin") {
             $this->model->loginAdmin($email, $password);
@@ -81,31 +74,12 @@ class Controller
         $this->view->viewFooter();
     }
 
-    public function about()
-    {
-        $this->getHeader("Om Oss");
-        $this->view->viewAboutPage();
-        $this->getFooter();
-    }
-
     private function createCustomer()
     {
         $name = $this->utils->sanitize($_POST['name']);
         $email = $this->utils->sanitize($_POST['email']);
         $password = $this->utils->sanitize($_POST['password']);
-        // print_r($name);
-
-        $new_user = $this->model->insertCustomer($name, $email, $password);
-
-        // $this->view->viewDetailPage($product);
-
-        /*   if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            $this->processOrderForm();*/
-
+        $this->model->insertCustomer($name, $email, $password);
         $this->getFooter();
     }
-
-
-
-
 }

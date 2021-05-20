@@ -2,8 +2,6 @@
 
 class AdminView
 {
-
-
     public function viewHeader($title)
     {
         include_once("views/include/header.php");
@@ -19,53 +17,62 @@ class AdminView
         include_once("views/include/login.php");
     }
 
-
-    public function viewAdminPage()
-    {
-        include_once("views/include/admin.php");
-    }
-
-
     public function adminViewProduct()
     {
         echo "Viewing product page";
     }
 
+    public function viewAdminPage()
+    {
+        $html = <<<HTML
+            </div>
+                <hr>
+                <p class="text-center">
+                    <a href="?page=admin&view=create">Create Product</a>
+                </p>
+                <hr>
+                <p class="text-center">
+                    <a href="?page=admin&view=products">View Products</a>
+                </p>
+                <hr>
+                <p class="text-center">
+                    <a href="?page=admin&view=orders">View Orders</a>
+                </p>
+        HTML;
+
+        echo $html;
+    }
+
     public function viewAdminOrders($order)
     {
-  
+        //echo $is_shipped;
+        $update = ($order['is_shipped'] == 0) ? "Mark as shipped" : "Mark as not shipped";
 
-    //echo $is_shipped;
-    $update = ($order['is_shipped'] == 0) ? "Mark as shipped" : "Mark as not shipped";
+        $html = <<<HTML
 
-    $html = <<<HTML
-
-    <div class="col-md-6">
-            <div class="card m-1">
-                <div class="card-body">
-                    <div class="card-title text-center">
-                        <h4>Order id: $order[order_id]</h4>
-                        <h4>Is shipped: $order[is_shipped]</h4>
-                        <form method="post">
-                            <select name="order_shipped">
-                            <option value="1">shipped</option>
-                            <option value="0">awaiting</option>
-                            </select>
-                            <br><br>
-                            <input type="submit" value="$update">
-                            <input type="hidden" name="order_id" value="$order[order_id]">
-                        </form>
+            <div class="col-md-6">
+                    <div class="card m-1">
+                        <div class="card-body">
+                            <div class="card-title text-center">
+                                <h4>Order id: $order[order_id]</h4>
+                                <h4>Is shipped: $order[is_shipped]</h4>
+                                <form method="post">
+                                    <select name="order_shipped">
+                                    <option value="1">shipped</option>
+                                    <option value="0">awaiting</option>
+                                    </select>
+                                    <br><br>
+                                    <input type="submit" value="$update">
+                                    <input type="hidden" name="order_id" value="$order[order_id]">
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </a>
-    </div>  <!-- col -->
-HTML;
+                </a>
+            </div>  <!-- col -->
+        HTML;
 
-echo $html;
-
-
-
+        echo $html;
     }
 
     // Bra att läsa om PHP Templating och HEREDOC syntax!
@@ -79,7 +86,6 @@ echo $html;
             }
         }
     }
-
 
     public function viewOneProduct($product)
     {
@@ -131,8 +137,6 @@ echo $html;
         echo $html;
     }
 
- 
-
     public function viewAllProducts($products)
     {
         foreach ($products as $product) {
@@ -143,8 +147,6 @@ echo $html;
             }
         }
     }
-
-
 
     public function viewCreatePage()
     {
@@ -190,8 +192,6 @@ echo $html;
                     <input type="submit" name="create" class="form-control my-2 btn btn-lg btn-outline-success" 
                             value="Create Product">
                 </form>
-                
-            <!-- col avslutas efter ett meddelande från viewConfirmMessage eller viewErrorMessage -->
         HTML;
 
         echo $html;
@@ -238,49 +238,6 @@ echo $html;
                     <input type="submit" name="delete" class="form-control my-2 btn btn-lg btn-outline-danger" 
                             value="Delete Product">
                 </form>
-                
-            <!-- col avslutas efter ett meddelande från viewConfirmMessage eller viewErrorMessage -->
-        HTML;
-
-        echo $html;
-    }
-
-
-    public function viewConfirmMessage($customer, $lastInsertId)
-    {
-        $this->printMessage(
-            "<h4>Tack $customer[name]</h4>
-            <p>Vi kommer att skicka filmen till följande e-post:</p>
-            <p>$customer[email]</p>
-            <p>Ditt ordernummer är $lastInsertId </p>
-            </div> <!-- col  avslutar Beställningsformulär -->
-            ",
-            "success"
-        );
-    }
-
-    public function viewErrorMessage($customer_id)
-    {
-        $this->printMessage(
-            "<h4>Kundnummer $customer_id finns ej i vårt kundregister!</h4>
-            <h5>Kontakta kundtjänst</h5>
-            </div> <!-- col  avslutar Beställningsformulär -->
-            ",
-            "warning"
-        );
-    }
-
-    /**
-     * En funktion som skriver ut ett felmeddelande
-     * $messageType enligt Bootstrap Alerts
-     * https://getbootstrap.com/docs/5.0/components/alerts/
-     */
-    public function printMessage($message, $messageType = "danger")
-    {
-        $html = <<< HTML
-            <div class="my-2 alert alert-$messageType">
-                $message
-            </div>
         HTML;
 
         echo $html;

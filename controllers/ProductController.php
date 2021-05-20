@@ -30,18 +30,13 @@ class ProductController
         $this->view->viewAllProducts($products);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $this->utils->sanitize($_POST['product_id']);
-        
-           echo count($_POST);
-           echo "<br>";
-
-           print_r($_POST);
-           echo "<br>";
-
-           $this->model->addToCart($id);
+            if (isset($_SESSION['loggedin'])) {
+                $id = $this->utils->sanitize($_POST['product_id']);
+                $this->model->addToCart($id);
+            } else {
+                header('location: index.php?page=login');
+            }
         }
-
-
         $this->getFooter();
     }
 
@@ -56,11 +51,13 @@ class ProductController
             $this->view->viewDetailPage($product);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $this->utils->sanitize($_POST['product_id']);
-            $this->model->addToCart($id);
-
+            if (isset($_SESSION['loggedin'])) {
+                $id = $this->utils->sanitize($_POST['product_id']);
+                $this->model->addToCart($id);
+            } else {
+                header('location: index.php?page=login');
+            }
         }
-
         $this->getFooter();
     }
 
@@ -69,7 +66,7 @@ class ProductController
         $this->getHeader('Shoppingcart');
         $productsArray = array();
         $totalPrice = 0;
-     // print_r ($_SESSION['shoppingcart']);
+        // print_r ($_SESSION['shoppingcart']);
         if (isset($_SESSION['shoppingcart'])) {
             $shoppingCartItems = array_count_values($_SESSION['shoppingcart']);
             $shoppingCartQuantities = array_values($shoppingCartItems);
@@ -81,8 +78,8 @@ class ProductController
 
             $this->view->tableHeader();
 
-            foreach ($productsArray as $index=>$product) {
-                $quantity=$shoppingCartQuantities[$index];
+            foreach ($productsArray as $index => $product) {
+                $quantity = $shoppingCartQuantities[$index];
                 $price = $quantity * $product['price'];
                 $totalPrice += $price;
                 $this->view->viewCartProduct($product, $quantity, $price);
@@ -91,33 +88,20 @@ class ProductController
             $this->view->tableFooter($totalPrice);
             $this->getFooter();
 
+            if (($_SERVER['REQUEST_METHOD']) === 'POST') {
 
-            if(($_SERVER['REQUEST_METHOD']) === 'POST') {
-                
                 $customer_id = intval($_SESSION['id']);
                 $order_id = $this->model->insertOrder($customer_id, $totalPrice);
-                
-                foreach($productsArray as $index=>$product) {
-                    $quantity=$shoppingCartQuantities[$index];
+
+                foreach ($productsArray as $index => $product) {
+                    $quantity = $shoppingCartQuantities[$index];
                     $product_id = $product['id'];
                     $this->model->insertOrderItem($order_id, $product_id, $quantity);
                 }
-                 $_SESSION['shoppingcart'] = array();
-                
+                $_SESSION['shoppingcart'] = array();
+
                 header('location: index.php');
             }
         }
     }
-
-<<<<<<< HEAD
 }
-=======
-    public function sanitize($text)
-    {
-        $text = trim($text);
-        $text = stripslashes($text);
-        $text = htmlspecialchars($text);
-        return $text;
-    }
-}
->>>>>>> d7d26afe536c641a940debcc655c15bbc33203b1

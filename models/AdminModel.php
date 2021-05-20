@@ -2,7 +2,6 @@
 
 class AdminModel
 {
-
     private $db;
 
     public function __construct($database)
@@ -16,15 +15,14 @@ class AdminModel
         return $products;
     }
 
-
     public function fetchAllOrders()
     {
         $orders = $this->db->select("SELECT * FROM `order`");
         return $orders;
-
     }
 
-    public function updateOrders($order_id, $is_shipped) {
+    public function updateOrders($order_id, $is_shipped)
+    {
         echo '<br>';
         $statement =
             "UPDATE `order` SET 
@@ -37,20 +35,16 @@ class AdminModel
             ':order_id' => $order_id
         );
         $this->db->update($statement, $parameters);
-     //   return array('order' => $order_id);
+        //   return array('order' => $order_id);
     }
-
-
 
     public function fetchOrderById($order_id)
     {
-
         $statement = "SELECT * FROM `order` WHERE order_id=:order_id";
         $parameters = array(':order_id' => $order_id);
         $order = $this->db->select($statement, $parameters);
         return $order;
     }
-
 
     public function fetchProductById($id)
     {
@@ -142,50 +136,5 @@ class AdminModel
         );
 
         $this->db->insert($statement, $parameters);
-    }
-
-
-    public function loginAdmin($email, $password)
-    {
-
-        $admin = $this->fetchAdminByEmail($email);
-        if (!$admin) {
-            $html = <<< HTML
-            <div class="my-2 alert alert-danger">
-                You don't have have access to this page. 
-            </div>
-            HTML;
-
-            echo $html;
-            exit();
-        }
-
-        $adminId = $admin['id'];
-        $email = $admin['email'];
-        $dbPassword = $admin['password'];
-
-        if (!$password === $dbPassword) {
-            $html = <<< HTML
-            <div class="my-2 alert alert-danger">
-                Wrong username or password!
-            </div>
-            HTML;
-
-            echo $html;
-            exit();
-        }
-
-        if (!isset($_SESSION)) {
-            session_set_cookie_params(0);
-            session_start();
-        }
-
-        // Store data in session variables
-        $_SESSION["loggedin"] = true;
-        $_SESSION["id"] = $adminId;
-        $_SESSION["email"] = $email;
-        $_SESSION["admin"] = true;
-
-        header("location: ?page=admin");
     }
 }

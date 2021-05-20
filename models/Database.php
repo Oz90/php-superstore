@@ -49,7 +49,6 @@ class Database
         // https://www.php.net/manual/en/pdostatement.fetchall
     }
 
-
     /**
      * INSERT
      */
@@ -65,7 +64,7 @@ class Database
      */
     public function update($statement, $input_parameters = [])
     {
-        
+
         $this->execute($statement, $input_parameters);
     }
 
