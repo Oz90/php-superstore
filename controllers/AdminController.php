@@ -60,12 +60,9 @@ class AdminController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $order_id = $this->utils->sanitize($_POST['order_id']);
             $is_shipped = $this->utils->sanitize($_POST['order_shipped']);
-            echo "You Just updated: ";
-            echo '<br>';
-            echo "ORDER ID: " .  $order_id;
-            echo '<br>';
-            echo "ORDER SHIPPED: " . $is_shipped;
             $this->model->updateOrders($order_id, $is_shipped);
+            $shipping_message = $is_shipped == 0 ? "waiting to be shipped" : "shipped";
+            $this->view->viewOrderStatus($order_id, $shipping_message);
             $orders = $this->model->fetchAllOrders();
             $this->view->viewAllOrders($orders);
         } else {

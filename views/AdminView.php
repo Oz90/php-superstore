@@ -2,6 +2,12 @@
 
 class AdminView
 {
+    private $utils;
+
+    public function __construct($utils)
+    {
+        $this->utils = $utils;
+    }
     public function viewHeader($title)
     {
         include_once("views/include/header.php");
@@ -36,7 +42,6 @@ class AdminView
     public function viewAdminOrders($order)
     {
         //echo $is_shipped;
-        $update = ($order['is_shipped'] == 0) ? "Mark as shipped" : "Mark as not shipped";
 
         $html = <<<HTML
 
@@ -48,11 +53,11 @@ class AdminView
                                 <h4>Is shipped: $order[is_shipped]</h4>
                                 <form method="post">
                                     <select name="order_shipped">
-                                    <option value="1">shipped</option>
-                                    <option value="0">awaiting</option>
+                                    <option value="1">Shipped</option>
+                                    <option value="0">Not shipped</option>
                                     </select>
                                     <br><br>
-                                    <input type="submit" value="$update">
+                                    <input type="submit" value="Update">
                                     <input type="hidden" name="order_id" value="$order[order_id]">
                                 </form>
                             </div>
@@ -77,6 +82,12 @@ class AdminView
         }
     }
 
+    public function viewOrderStatus($order_id, $shipping_message)
+    {
+
+        $this->utils->confirmShippingMessage($order_id, $shipping_message);
+    }
+
 
     public function viewAdminProduct($product)
     {
@@ -94,7 +105,7 @@ class AdminView
                             </div>
                         </div>
                     </div>
-            </div>  <!-- col -->
+            </div>
         HTML;
 
         echo $html;

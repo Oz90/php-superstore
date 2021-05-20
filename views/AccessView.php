@@ -2,6 +2,13 @@
 
 class AccessView
 {
+    private $utils;
+
+    public function __construct($utils)
+    {
+        $this->utils = $utils;
+    }
+
     public function viewHeader($title)
     {
         include_once("views/include/header.php");

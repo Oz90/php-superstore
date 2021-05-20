@@ -2,14 +2,10 @@
 
 class ViewUtils
 {
-    public function viewConfirmMessage($customer, $lastInsertId)
+    public function confirmShippingMessage($order_id, $shipping_message)
     {
         $this->printMessage(
-            "<h4>Tack $customer[name]</h4>
-            <p>Vi kommer att skicka filmen till följande e-post:</p>
-            <p>$customer[email]</p>
-            <p>Ditt ordernummer är $lastInsertId </p>
-            </div> <!-- col  avslutar Beställningsformulär -->
+            "<p>You've just updated: order $order_id and set the shipping status to $shipping_message</p>
             ",
             "success"
         );
