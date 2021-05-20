@@ -14,12 +14,13 @@
 
 <body class="container">
     <?php
+/*    if(isset($_SESSION['shoppingcart'])){
 
-    $cart_amount = count($_SESSION['shoppingcart']) > 0 ? count($_SESSION['shoppingcart']) : "";
-
+        $cart_amount = count($_SESSION['shoppingcart']) > 0 ? count($_SESSION['shoppingcart']) : "";
+    }*/
     if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         echo "<a class='btn btn-primary' href='?page=logout'>logout</a>";
-        echo "<a class='btn btn-primary' href='?page=shoppingcart'> 🛒 $cart_amount</a>";
+        echo "<a class='btn btn-primary' href='?page=shoppingcart'> 🛒 </a>";
     } else {
         echo "<a class='btn btn-primary' href='?page=login'>login</a>";
         echo " <a class='btn btn-primary' href='?page=registration'>registration</a>";

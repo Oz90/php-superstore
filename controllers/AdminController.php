@@ -4,11 +4,13 @@ class AdminController
 
     private $model;
     private $view;
+    private $utils;
 
-    public function __construct($model, $view)
+    public function __construct($model, $view, $utils)
     {
         $this->model = $model;
         $this->view = $view;
+        $this->utils = $utils;
     }
 
     public function login($userType)
@@ -32,8 +34,8 @@ class AdminController
     private function loginUser($userType)
     {
 
-        $email = $this->sanitize($_POST['email']);
-        $password = $this->sanitize($_POST['password']);
+        $email = $this->utils->sanitize($_POST['email']);
+        $password = $this->utils->sanitize($_POST['password']);
         // print_r($name);
 
         if ($userType === "Admin") {
@@ -68,7 +70,7 @@ class AdminController
         $this->view->viewAdminPage();
 
         if (isset($_GET['view'])) {
-            $view = $this->sanitize($_GET['view']);
+            $view = $this->utils->sanitize($_GET['view']);
 
             if ($view === "products") {
                 $this->getAdminProducts();
@@ -77,7 +79,13 @@ class AdminController
                 $this->editProduct();
             }
             if ($view === "orders") {
-                $this->view->adminViewOrders();
+               // $orders = $this->model->fetchAllOrders();
+
+      
+
+                $this->updateOrders();
+              
+           
             }
             if ($view === "delete") {
                 $this->deleteProduct();
@@ -89,6 +97,34 @@ class AdminController
         $this->getFooter();
     }
 
+    private function updateOrders() {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+
+         $order_id = $this->utils->sanitize($_POST['order_id']);
+         $is_shipped = $this->utils->sanitize($_POST['order_shipped']);
+            echo "You Just updated: ";
+            echo '<br>';
+            echo "ORDER ID: " .  $order_id;
+            echo '<br>';
+            echo "ORDER SHIPPED: " . $is_shipped;
+            $this->model->updateOrders($order_id, $is_shipped); 
+                   $orders = $this->model->fetchAllOrders();
+                    $this->view->viewAllOrders($orders);
+
+            
+
+
+        }
+        else {
+            $orders = $this->model->fetchAllOrders();
+            $this->view->viewAllOrders($orders);
+        }
+       
+ 
+    }
+
     private function getAdminProducts()
     {
         $products = $this->model->fetchAllProducts();
@@ -97,7 +133,7 @@ class AdminController
 
     private function deleteProduct()
     {
-        $id = $this->sanitize($_GET['id']);
+        $id = $this->utils->sanitize($_GET['id']);
         $this->model->deleteProductById($id);
         header("location: ?page=admin&view=products");
     }
@@ -107,7 +143,7 @@ class AdminController
     {
         $this->getHeader("Edit Product");
 
-        $id = $this->sanitize($_GET['id']);
+        $id = $this->utils->sanitize($_GET['id']);
         $product = $this->model->fetchProductById($id);
 
         if ($product)
@@ -136,12 +172,12 @@ class AdminController
 
     private function processEditForm()
     {
-        $product_id             = $this->sanitize($_POST['product_id']);
-        $product_name           = $this->sanitize($_POST['product_name']);
-        $product_price          = $this->sanitize($_POST['product_price']);
-        $product_description    = $this->sanitize($_POST['product_description']);
-        $product_image          = $this->sanitize($_POST['product_image']);
-        $product_category       = $this->sanitize($_POST['product_category']);
+        $product_id             = $this->utils->sanitize($_POST['product_id']);
+        $product_name           = $this->utils->sanitize($_POST['product_name']);
+        $product_price          = $this->utils->sanitize($_POST['product_price']);
+        $product_description    = $this->utils->sanitize($_POST['product_description']);
+        $product_image          = $this->utils->sanitize($_POST['product_image']);
+        $product_category       = $this->utils->sanitize($_POST['product_category']);
 
         $this->model->updateProduct(
             $product_id,
@@ -158,11 +194,11 @@ class AdminController
 
     private function processCreateForm()
     {
-        $product_name           = $this->sanitize($_POST['product_name']);
-        $product_price          = $this->sanitize($_POST['product_price']);
-        $product_description    = $this->sanitize($_POST['product_description']);
-        $product_image          = $this->sanitize($_POST['product_image']);
-        $product_category       = $this->sanitize($_POST['product_category']);
+        $product_name           = $this->utils->sanitize($_POST['product_name']);
+        $product_price          = $this->utils->sanitize($_POST['product_price']);
+        $product_description    = $this->utils->sanitize($_POST['product_description']);
+        $product_image          = $this->utils->sanitize($_POST['product_image']);
+        $product_category       = $this->utils->sanitize($_POST['product_category']);
 
         $this->model->createProduct(
             $product_name,
@@ -174,15 +210,5 @@ class AdminController
         header("location: ?page=admin&view=products");
     }
 
-    /**
-     * Sanitize Inputs
-     * https://www.w3schools.com/php/php_form_validation.asp
-     */
-    public function sanitize($text)
-    {
-        $text = trim($text);
-        $text = stripslashes($text);
-        $text = htmlspecialchars($text);
-        return $text;
-    }
+
 }

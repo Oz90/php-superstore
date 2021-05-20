@@ -18,6 +18,10 @@ require_once("controllers/Controller.php");
 require_once("controllers/AdminController.php");
 require_once("controllers/ProductController.php");
 
+//Utils
+require_once("utils/controllerUtils.php");
+
+
 //!: Skapa instans av databas
 $database   = new Database("superstore", "root", "root");
 
@@ -34,16 +38,25 @@ $view       = new View();
 $productView       = new ProductView();
 $adminView       = new AdminView();
 
+//Instansiera utils
+$utils = new Utils();
+
+
+
 //!: Skapa instans av Controller
 //!: Controller interacts with Model And View
 //!: Controllern hanterar alla GET requests. 
 //!: Controllern Använder Model för att hämta data. 
 //!: Controllern Använder View för att rendera data till browsern. 
-$controller = new Controller($model, $view);
-$adminController = new AdminController($adminModel, $adminView);
-$productController = new ProductController($productModel, $productView);
+$controller = new Controller($model, $view, $utils);
+$adminController = new AdminController($adminModel, $adminView, $utils);
+$productController = new ProductController($productModel, $productView, $utils);
 
 //! Run the main function in class Controller. 
+
+
+
+
 
 $page = $_GET['page'] ?? "";
 

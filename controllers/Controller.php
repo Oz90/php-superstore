@@ -4,13 +4,14 @@ class Controller
 
     private $model;
     private $view;
+    private $utils;
 
-    public function __construct($model, $view)
+    public function __construct($model, $view, $utils)
     {
         $this->model = $model;
         $this->view = $view;
+        $this->utils = $utils;
     }
-
     public function login($userType)
     {
         // Check if the user is already logged in, if yes then redirect him to welcome page
@@ -46,9 +47,9 @@ class Controller
 
     public function logout()
     {
+        
         // Destroy the session.
         session_destroy();
-
         // Redirect to login page
         header("location: index.php");
         exit;
@@ -57,8 +58,8 @@ class Controller
     private function loginUser($userType)
     {
 
-        $email = $this->sanitize($_POST['email']);
-        $password = $this->sanitize($_POST['password']);
+        $email = $this->utils->sanitize($_POST['email']);
+        $password = $this->utils->sanitize($_POST['password']);
         // print_r($name);
 
         if ($userType === "Admin") {
@@ -89,9 +90,9 @@ class Controller
 
     private function createCustomer()
     {
-        $name = $this->sanitize($_POST['name']);
-        $email = $this->sanitize($_POST['email']);
-        $password = $this->sanitize($_POST['password']);
+        $name = $this->utils->sanitize($_POST['name']);
+        $email = $this->utils->sanitize($_POST['email']);
+        $password = $this->utils->sanitize($_POST['password']);
         // print_r($name);
 
         $new_user = $this->model->insertCustomer($name, $email, $password);
@@ -106,15 +107,5 @@ class Controller
 
 
 
-    /**
-     * Sanitize Inputs
-     * https://www.w3schools.com/php/php_form_validation.asp
-     */
-    public function sanitize($text)
-    {
-        $text = trim($text);
-        $text = stripslashes($text);
-        $text = htmlspecialchars($text);
-        return $text;
-    }
+
 }

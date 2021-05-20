@@ -16,6 +16,42 @@ class AdminModel
         return $products;
     }
 
+
+    public function fetchAllOrders()
+    {
+        $orders = $this->db->select("SELECT * FROM `order`");
+        return $orders;
+
+    }
+
+    public function updateOrders($order_id, $is_shipped) {
+        echo '<br>';
+        $statement =
+            "UPDATE `order` SET 
+            is_shipped = :is_shipped
+        WHERE 
+            order_id = :order_id";
+
+        $parameters = array(
+            ':is_shipped' => $is_shipped,
+            ':order_id' => $order_id
+        );
+        $this->db->update($statement, $parameters);
+     //   return array('order' => $order_id);
+    }
+
+
+
+    public function fetchOrderById($order_id)
+    {
+
+        $statement = "SELECT * FROM `order` WHERE order_id=:order_id";
+        $parameters = array(':order_id' => $order_id);
+        $order = $this->db->select($statement, $parameters);
+        return $order;
+    }
+
+
     public function fetchProductById($id)
     {
         $statement = "SELECT * FROM product WHERE id = :id";

@@ -26,13 +26,15 @@ class ProductModel
 
     public function addToCart($id)
     {
+
         if (isset($id)) {
             array_push($_SESSION['shoppingcart'], $id);
         }
+
+
     }
 
 
-//*Test
     public function insertOrder($customer_id, $totalPrice)
     {
       

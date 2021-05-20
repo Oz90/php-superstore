@@ -4,11 +4,13 @@ class ProductController
 
     private $model;
     private $view;
+    private $utils;
 
-    public function __construct($model, $view)
+    public function __construct($model, $view, $utils)
     {
         $this->model = $model;
         $this->view = $view;
+        $this->utils = $utils;
     }
 
     private function getHeader($title)
@@ -29,9 +31,17 @@ class ProductController
         $this->view->viewAllProducts($products);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $this->sanitize($_POST['product_id']);
-            $this->model->addToCart($id);
+            $id = $this->utils->sanitize($_POST['product_id']);
+        
+           echo count($_POST);
+           echo "<br>";
+
+           print_r($_POST);
+           echo "<br>";
+
+           $this->model->addToCart($id);
         }
+
 
         $this->getFooter();
     }
@@ -41,15 +51,16 @@ class ProductController
     {
         $this->getHeader("Beställning");
 
-        $id = $this->sanitize($_GET['id']);
+        $id = $this->utils->sanitize($_GET['id']);
         $product = $this->model->fetchProductById($id);
 
         if ($product)
             $this->view->viewDetailPage($product);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $this->sanitize($_POST['product_id']);
+            $id = $this->utils->sanitize($_POST['product_id']);
             $this->model->addToCart($id);
+
         }
 
         $this->getFooter();
@@ -61,6 +72,7 @@ class ProductController
         $this->getHeader('Shoppingcart');
         $productsArray = array();
         $totalPrice = 0;
+     // print_r ($_SESSION['shoppingcart']);
         if (isset($_SESSION['shoppingcart'])) {
             $shoppingCartItems = array_count_values($_SESSION['shoppingcart']);
             $shoppingCartQuantities = array_values($shoppingCartItems);
@@ -94,23 +106,11 @@ class ProductController
                     $product_id = $product['id'];
                     $this->model->insertOrderItem($order_id, $product_id, $quantity);
                 }
-                
-                $_SESSION['shoppingcart'] = array();
+                 $_SESSION['shoppingcart'] = array();
                 
                 header('location: index.php');
             }
         }
     }
 
-    /**
-     * Sanitize Inputs
-     * https://www.w3schools.com/php/php_form_validation.asp
-     */
-    public function sanitize($text)
-    {
-        $text = trim($text);
-        $text = stripslashes($text);
-        $text = htmlspecialchars($text);
-        return $text;
-    }
 }

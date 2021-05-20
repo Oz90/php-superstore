@@ -1,3 +1,4 @@
+  
 <?php
 
 class ProductView
@@ -24,6 +25,7 @@ class ProductView
 
     public function viewOneProduct($product)
     {
+        
         $html = <<<HTML
         
             <div class="col-md-6">
@@ -47,6 +49,7 @@ class ProductView
         HTML;
 
         echo $html;
+
     }
 
     public function viewAdminProduct($product)
@@ -70,6 +73,8 @@ class ProductView
 
         echo $html;
     }
+
+    
 
     public function viewAllProducts($products)
     {
@@ -121,7 +126,6 @@ class ProductView
                         <td>$product[name]</td>
                         <td>$quantity</td>
                         <td>$ $price </td>
-
                     </tr>
         HTML;
 

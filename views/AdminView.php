@@ -31,13 +31,54 @@ class AdminView
         echo "Viewing product page";
     }
 
-    public function adminViewOrders()
+    public function viewAdminOrders($order)
     {
-        echo "Viewing Orders page";
+  
+
+    //echo $is_shipped;
+    $update = ($order['is_shipped'] == 0) ? "Mark as shipped" : "Mark as not shipped";
+
+    $html = <<<HTML
+
+    <div class="col-md-6">
+            <div class="card m-1">
+                <div class="card-body">
+                    <div class="card-title text-center">
+                        <h4>Order id: $order[order_id]</h4>
+                        <h4>Is shipped: $order[is_shipped]</h4>
+                        <form method="post">
+                            <select name="order_shipped">
+                            <option value="1">shipped</option>
+                            <option value="0">awaiting</option>
+                            </select>
+                            <br><br>
+                            <input type="submit" value="$update">
+                            <input type="hidden" name="order_id" value="$order[order_id]">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>  <!-- col -->
+HTML;
+
+echo $html;
+
+
+
     }
 
     // Bra att läsa om PHP Templating och HEREDOC syntax!
     // https://css-tricks.com/php-templating-in-just-php/
+    public function viewAllOrders($orders)
+    {
+
+        foreach ($orders as $order) {
+            if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
+                $this->viewAdminOrders($order);
+            }
+        }
+    }
 
 
     public function viewOneProduct($product)
@@ -89,6 +130,8 @@ class AdminView
 
         echo $html;
     }
+
+ 
 
     public function viewAllProducts($products)
     {

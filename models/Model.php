@@ -176,6 +176,8 @@ class Model
     {
         if (isset($id)) {
             array_push($_SESSION['shoppingcart'], $id);
+                header("location: index.php");
+
         }
     }
 
