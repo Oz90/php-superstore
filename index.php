@@ -60,6 +60,9 @@ switch ($page) {
     case "admin":
         $adminController->admin();
         break;
+    case "login":
+        $accessController->login("Customer");
+        break;
     case "login-admin":
         $accessController->login("Admin");
         break;
@@ -68,9 +71,6 @@ switch ($page) {
         break;
     case "registration":
         $accessController->registration();
-        break;
-    case "login":
-        $accessController->login("Customer");
         break;
     case "product-page":
         $productController->productPage();
