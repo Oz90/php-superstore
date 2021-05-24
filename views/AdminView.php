@@ -41,7 +41,6 @@ class AdminView
 
     public function viewAdminOrders($order)
     {
-        //echo $is_shipped;
 
         $html = <<<HTML
 
@@ -64,14 +63,13 @@ class AdminView
                         </div>
                     </div>
                 </a>
-            </div>  <!-- col -->
+            </div> 
         HTML;
 
         echo $html;
     }
 
-    // Bra att läsa om PHP Templating och HEREDOC syntax!
-    // https://css-tricks.com/php-templating-in-just-php/
+
     public function viewAllOrders($orders)
     {
 
@@ -126,7 +124,6 @@ class AdminView
     }
     public function viewEditPage($product)
     {
-        // $this->viewOneProduct($product);
         $this->viewEditForm($product);
     }
 

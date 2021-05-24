@@ -9,7 +9,9 @@ class AccessModel
     {
         $this->db = $database;
     }
-
+/**
+ * Fetcha customer från databasen med hjälp av email
+ */
     public function fetchCustomerByEmail($email)
     {
         $statement = "SELECT * FROM customer WHERE email=:email";
@@ -18,6 +20,10 @@ class AccessModel
         return $customer[0] ?? false;
     }
 
+
+/**
+ * Fetcha adminanvändare med hjälp av email
+ */
     public function fetchAdminByEmail($email)
     {
         $statement = "SELECT * FROM admin WHERE email=:email";
@@ -26,6 +32,12 @@ class AccessModel
         return $admin[0] ?? false;
     }
 
+    /**
+ * Fetcha adminanvändare med hjälp av email
+ * errorhantering för om email adressen inte finns i databasen 
+ * errorhantering för om man skriver fel lösenord
+ * annars skapas en session och användaren skickas till admin page  
+ */
     public function loginAdmin($email, $password)
     {
         $admin = $this->fetchAdminByEmail($email);
@@ -56,7 +68,6 @@ class AccessModel
         }
 
         if (!isset($_SESSION)) {
-            session_set_cookie_params(0);
             session_start();
         }
 
@@ -68,6 +79,12 @@ class AccessModel
         header("location: ?page=admin");
     }
 
+/**
+ * Fetcha customer med hjälp av email
+ * errorhantering för om email adressen inte finns i databasen 
+ * errorhantering för om man skriver fel lösenord
+ * annars skapas en session och användaren skickas till index  
+ */
     public function loginCustomer($email, $password)
     {
         $customer = $this->fetchCustomerByEmail($email);
@@ -98,7 +115,6 @@ class AccessModel
         }
 
         if (!isset($_SESSION)) {
-            session_set_cookie_params(0);
             session_start();
         }
         // Store data in session variables
@@ -109,7 +125,11 @@ class AccessModel
 
         header("location: index.php");
     }
-
+/**
+ * Lägger till customer i databasen
+ * Errorhantering om customer finns
+ * Annars gör vi en insert till databasen
+ */
     public function insertCustomer($name, $email, $password)
     {
         $customer = $this->fetchCustomerByEmail($email);

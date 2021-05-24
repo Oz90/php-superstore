@@ -22,7 +22,11 @@ class ProductController
     {
         $this->view->viewFooter();
     }
-
+/**
+ * Fetchar alla produkter och visar dom för kunden
+ * Tar emot en post request för att lägga till varor
+ * Annars renderar vi bara ut login sidan
+ */
     public function getAllProducts()
     {
         $this->getHeader("Välkommen");
@@ -40,6 +44,12 @@ class ProductController
         $this->getFooter();
     }
 
+    /**
+     * Hämtar 1 produkt och visar detaljsidan
+     * Tar emot en post request för att lägga till varor
+     * Annars renderar vi bara ut login sidan
+     */
+
     public function productPage()
     {
         $this->getHeader("Beställning");
@@ -47,8 +57,12 @@ class ProductController
         $id = $this->utils->sanitize($_GET['id']);
         $product = $this->model->fetchProductById($id);
 
-        if ($product)
+        if ($product) {
             $this->view->viewDetailPage($product);
+
+        } else {
+            echo "product not found";
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_SESSION['loggedin'])) {
@@ -61,12 +75,18 @@ class ProductController
         $this->getFooter();
     }
 
+    /**
+     * Hanterar varukorgen
+     * Kolla hur många produkter som finns i shoppingcart array
+     * Rendera ut kvantitet pris och totalsumma
+     * Ta emot en post och lägg till order i databasen
+     */
     public function shoppingCart()
     {
         $this->getHeader('Shoppingcart');
         $productsArray = array();
         $totalPrice = 0;
-        // print_r ($_SESSION['shoppingcart']);
+      
         if (isset($_SESSION['shoppingcart'])) {
             $shoppingCartItems = array_count_values($_SESSION['shoppingcart']);
             $shoppingCartQuantities = array_values($shoppingCartItems);

@@ -9,19 +9,27 @@ class AdminModel
         $this->db = $database;
     }
 
+    /**
+     * Fetcha alla produkter från databasen
+     */
     public function fetchAllProducts()
     {
         $products = $this->db->select("SELECT * FROM product");
         return $products;
     }
-
+ /**
+     * Fetcha alla ordrar från databasen
+     */
     public function fetchAllOrders()
     {
         $orders = $this->db->select("SELECT * FROM `order`");
         return $orders;
     }
 
-
+    /**
+     * Uppdatera ordrar i databasen
+     * Sätter is_shipped och not shipped på valt order_id
+     */
     public function updateOrders($order_id, $is_shipped)
     {
         $statement =
@@ -35,17 +43,11 @@ class AdminModel
             ':order_id' => $order_id
         );
         $this->db->update($statement, $parameters);
-        //   return array('order' => $order_id);
     }
 
-    // public function fetchOrderById($order_id)
-    // {
-    //     $statement = "SELECT * FROM `order` WHERE order_id=:order_id";
-    //     $parameters = array(':order_id' => $order_id);
-    //     $order = $this->db->select($statement, $parameters);
-    //     return $order;
-    // }
-
+/**
+ * Hämtar och returnerar produkt med hjälp av id 
+*/
     public function fetchProductById($id)
     {
         $statement = "SELECT * FROM product WHERE id = :id";
@@ -54,14 +56,21 @@ class AdminModel
         return $product[0] ?? false;
     }
 
+    /**
+ * Raderar produkt med hjälp av id 
+*/
     public function deleteProductById($id)
     {
         $statement = "DELETE FROM product WHERE id = :id";
         $params = array(":id" => $id);
         $product = $this->db->delete($statement, $params);
-        // return $product[0] ?? false;
     }
 
+    /**
+ * Tar emot formdata
+ * Validerar att produkten finns
+ * Uppdaterar produkten i databasen med hjälp av nytt formdata
+*/
     public function updateProduct(
         $product_id,
         $product_name,
@@ -96,6 +105,11 @@ class AdminModel
         return array('product' => $product);
     }
 
+    
+    /**
+     * Tar emot formdata
+ * Skapar  produkt i databasen med hjälp av formdata
+*/
     public function createProduct(
         $product_name,
         $product_price,

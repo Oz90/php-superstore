@@ -8,13 +8,22 @@ class ProductModel
     {
         $this->db = $database;
     }
-
+/**
+ * Fetcha alla produkter från databasen
+ * Returnera produkterna
+ */
     public function fetchAllProducts()
     {
         $products = $this->db->select("SELECT * FROM product");
         return $products;
     }
 
+   /**
+    * Fetcha en produkt 
+    * Skicka med statement och params som består av produktens id
+    * Skapa en array $product och Gör en select med hjälp av params och statement
+    * returnera det första objektet i $product 
+     */ 
     public function fetchProductById($id)
     {
         $statement = "SELECT * FROM product WHERE id = :id";
@@ -23,6 +32,10 @@ class ProductModel
         return $product[0] ?? false;
     }
 
+    /**
+     * Lägg till en produkt i varukorgen
+     * Pusha in produktens id i shoppingcart array. 
+     */
     public function addToCart($id)
     {
         if (isset($id)) {
@@ -30,6 +43,12 @@ class ProductModel
         }
     }
 
+    /**
+     * Insert en order i datbasen
+     * Ta emot customer id och totalpris
+     * Insert $order_id som tar emot $statement och $parameters
+     * Vi skapar först en order som vi vill fylla med item senare (=>insertOrderItem) med hjälp av returnerat $order_id. 
+     */
     public function insertOrder($customer_id, $totalPrice)
     {
         $statement = "INSERT INTO `order` (customer_id, total_price)  
@@ -45,6 +64,13 @@ class ProductModel
 
         return $order_id;
     }
+
+    /** 
+     * Ta emot $order_id $product_id och $quantity
+     * order_item är en tabell som vi tillskriver med $order_id, $product_id och $quantity
+     * Gör en insert i databasen med $statement och $parameters
+     * 
+    */
 
     public function insertOrderItem($order_id, $product_id, $quantity)
     {

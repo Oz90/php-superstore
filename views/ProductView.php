@@ -20,10 +20,6 @@ class ProductView
         include_once("views/include/footer.php");
     }
 
-
-    // Bra att läsa om PHP Templating och HEREDOC syntax!
-    // https://css-tricks.com/php-templating-in-just-php/
-
     public function viewOneProduct($product)
     {
 
@@ -46,7 +42,7 @@ class ProductView
                         </div>
                     </div>
                 </a>
-            </div>  <!-- col -->
+            </div>  
         HTML;
 
         echo $html;
