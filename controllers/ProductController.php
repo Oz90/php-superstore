@@ -111,13 +111,16 @@ class ProductController
             if (($_SERVER['REQUEST_METHOD']) === 'POST') {
 
                 $customer_id = intval($_SESSION['id']);
-                $order_id = $this->model->insertOrder($customer_id, $totalPrice);
+        if(count($_SESSION['shoppingcart'])>0) {
 
+                $order_id = $this->model->insertOrder($customer_id, $totalPrice);
+      
                 foreach ($productsArray as $index => $product) {
                     $quantity = $shoppingCartQuantities[$index];
                     $product_id = $product['id'];
                     $this->model->insertOrderItem($order_id, $product_id, $quantity);
                 }
+            }
                 $_SESSION['shoppingcart'] = array();
 
                 header('location: index.php');

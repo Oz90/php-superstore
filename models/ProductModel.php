@@ -51,16 +51,17 @@ class ProductModel
      */
     public function insertOrder($customer_id, $totalPrice)
     {
-        $statement = "INSERT INTO `order` (customer_id, total_price)  
-                      VALUES (:customer_id, :total_price)";
+            $statement = "INSERT INTO `order` (customer_id, total_price)  
+            VALUES (:customer_id, :total_price)";
 
-        $parameters = array(
+            $parameters = array(
             ':customer_id' => $customer_id,
             ':total_price' => $totalPrice
-        );
+            );
 
-        // Ordernummer
-        $order_id = $this->db->insert($statement, $parameters);
+            // Ordernummer
+            $order_id = $this->db->insert($statement, $parameters);
+  
 
         return $order_id;
     }
