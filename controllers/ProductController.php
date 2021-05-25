@@ -22,17 +22,16 @@ class ProductController
     {
         $this->view->viewFooter();
     }
-/**
- * Fetchar alla produkter och visar dom för kunden
- * Tar emot en post request för att lägga till varor
- * Annars renderar vi bara ut login sidan
- */
+    /**
+     * Fetchar alla produkter och visar dom för kunden
+     * Tar emot en post request för att lägga till varor
+     * Annars renderar vi bara ut login sidan
+     */
     public function getAllProducts()
     {
         $this->getHeader("Välkommen");
         $products = $this->model->fetchAllProducts();
-        $this->view->viewAllProducts($products);
-
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_SESSION['loggedin'])) {
                 $id = $this->utils->sanitize($_POST['product_id']);
@@ -41,6 +40,7 @@ class ProductController
                 header('location: index.php?page=login');
             }
         }
+        $this->view->viewAllProducts($products);
         $this->getFooter();
     }
 

@@ -80,6 +80,7 @@ class AccessController
         $this->view->viewRegistrationPage();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->createCustomer();
+            header("location: index.php?page=login");
         }
         $this->getFooter();
     }
